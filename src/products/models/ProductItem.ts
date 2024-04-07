@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
 
-interface IProductItem extends Document {
+export interface IProductItem extends Document {
   product: Types.ObjectId;
   cant: number;
   base: Types.Decimal128;
