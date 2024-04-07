@@ -3,8 +3,14 @@ import CredentialsModel from "../../models/CredentialModel";
 import { compareHashPassword } from "../../utils/passwordManager";
 import UserModel from "../../models/UserModel";
 import { createToken } from "../../utils/tokenManager";
+import { getCurrentDate } from "../../../utils/dateManager";
 
 export const LoginController = async (req: Request, res: Response) => {
+  console.log(
+    `${getCurrentDate()} ${
+      req.method
+    } simora/api/authentication/security/authentication/login/`
+  );
   try {
     const { username, password } = req.body;
 

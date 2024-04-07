@@ -2,6 +2,8 @@
 import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import AppRoutes from "./routes/routes";
+import { authenticateToken } from "./middlewares/authenticateToken";
+import cors from "cors";
 
 // Creación del servidor
 const app: Express = express();
@@ -10,10 +12,10 @@ const app: Express = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Middleware para el seguridad con cors
+app.use(cors());
 // Rutas
 app.get("/", (req: Request, res: Response) => {
-  console.log("llego");
-  
   return res.status(200).json({
     message: "Server online",
   });
