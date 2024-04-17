@@ -1,33 +1,15 @@
-import mongoose, { Document, Schema, Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
+import { IProductItem } from "../types/ProductTypes";
 
-export interface IProductItem extends Document {
-  product: Types.ObjectId;
-  cant: number;
-  base: Types.Decimal128;
-  subtotal: Types.Decimal128;
-  iva: Types.Decimal128;
-  total: Types.Decimal128;
-  created_at: Date;
-  updated_at: Date;
-}
-
-const productSchema: Schema = new Schema(
+const productSchema: Schema = new Schema<IProductItem>(
   {
-    product: {
-      type: Schema.Types.ObjectId,
+    producto: {
+      type: Types.ObjectId,
       ref: "Product",
       required: true,
     },
-    cant: {
+    cantidad: {
       type: Number,
-      required: true,
-    },
-    base: {
-      type: Types.Decimal128,
-      required: true,
-    },
-    subtotal: {
-      type: Types.Decimal128,
       required: true,
     },
     iva: {

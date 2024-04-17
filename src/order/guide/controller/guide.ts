@@ -1,14 +1,16 @@
-import GuideModel from "../models/GuideModel";
+import GuideModel, { IGuide } from "../models/guide";
 
 // Función para generar un número de guía único y consecutivo
-export const generateUniqueGuideNumber = async () => {
-  // Generar desde
+export const generateUniqueGuideNumber = async (): Promise<string> => {
   let lastGuideNumberInDatabase = 11282;
 
   // Consulta el último número de guía almacenado en la base de datos
-  const lastGuide = await GuideModel.findOne({}, {}, { sort: { number: -1 } });
+  const lastGuide: IGuide | null = await GuideModel.findOne(
+    {},
+    {},
+    { sort: { number: -1 } }
+  );
 
-  
   if (lastGuide) {
     lastGuideNumberInDatabase = parseInt(
       lastGuide.number.replace("MAG", ""),
@@ -17,7 +19,7 @@ export const generateUniqueGuideNumber = async () => {
   }
 
   // Encuentra un número de guía único
-  let newGuideNumber;
+  let newGuideNumber: string;
   do {
     lastGuideNumberInDatabase++;
     newGuideNumber = `MAG${lastGuideNumberInDatabase

@@ -10,6 +10,7 @@ export const VerifyTokenController = async (req: Request, res: Response) => {
   );
   try {
     const { token } = req.body;
+
     if (!token) {
       return res.status(400).json({ error: "Token no proporcionado" });
     }

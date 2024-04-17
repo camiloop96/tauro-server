@@ -6,26 +6,26 @@ export const CreateProductController = async (req: Request, res: Response) => {
   console.log(`${getCurrentDate()} GET simora/api/product/create/`);
   try {
     // Extrae los datos del producto de la solicitud (request)
-    const { name, price } = req.body;
+    const { nombre, precio } = req.body;
 
     // Comprobaciones de existencia
-    if (!name) {
+    if (!nombre) {
       return res.status(400).json({
         message: "Falta el campo nombre",
       });
     }
-    if (!price) {
+    if (!precio) {
       return res.status(400).json({
         message: "Falta el campo precio",
       });
-    } else if (isNaN(price)) {
+    } else if (isNaN(precio)) {
       return res.status(400).json({
         message: "El campo precio debe ser número",
       });
     }
 
     // Comprobaciones de duplicidad
-    const existingProduct = await ProductModel.findOne({ name });
+    const existingProduct = await ProductModel.findOne({ nombre });
     if (existingProduct) {
       return res.status(404).json({
         message: "El producto ya existe",
@@ -35,8 +35,8 @@ export const CreateProductController = async (req: Request, res: Response) => {
     // Crea una instancia del modelo de productos con los datos
     const newProduct = new ProductModel({
       createdAt: new Date(0),
-      name,
-      price,
+      nombre,
+      precio,
     });
 
     // Guarda el producto en la base de datos

@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import AppRoutes from "./routes/routes";
 import { authenticateToken } from "./middlewares/authenticateToken";
 import cors from "cors";
+import multer from "multer";
 
 // Creación del servidor
 const app: Express = express();
@@ -20,6 +21,7 @@ app.get("/", (req: Request, res: Response) => {
     message: "Server online",
   });
 });
+
 app.use("/simora/api/", AppRoutes);
 
 // Manejador de errores para middleware no encontrado
