@@ -18,7 +18,7 @@ export interface ICustomerId {
 export interface ICustomer {
   _id?: ICustomerId;
   nombres: string;
-  cedula: string;
+  cedula: number;
   celular: number;
   addressList: IAddressItem[];
   created_at: Date;

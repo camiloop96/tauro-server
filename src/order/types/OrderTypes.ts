@@ -22,10 +22,12 @@ export interface IPago {
 }
 
 export interface ICobro {
-  subtotal: Types.Decimal128;
+  cantProductos: number;
+  subtotal: number;
   IVA: number;
-  total: Types.Decimal128;
+  total: number;
 }
+
 export interface IOrden {
   IdFacturacion?: string;
   cliente: ICustomerId;
@@ -39,4 +41,23 @@ export interface IOrden {
   };
   cobros: ICobro;
   created_at: Date;
+}
+
+export interface OrderQuery {
+  _id?: Types.ObjectId;
+  guia?: string;
+  nombres?: string;
+  celular?: number;
+  cedula?: number;
+  departamento?: string;
+  ciudad?: string;
+  localidad?: string;
+  barrio?: string;
+  direccion?: string;
+  subtotal?: number;
+  envio?: number;
+  total?: number;
+  infoAdic?: string;
+  medioPago?: string;
+  comprobante?: string;
 }

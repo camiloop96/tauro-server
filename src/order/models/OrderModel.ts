@@ -86,11 +86,10 @@ const orderSchema = new Schema<IOrden>({
     },
   },
   cobros: {
-    subtotal: {
-      type: Types.Decimal128,
-      IVA: Number,
-      total: Types.Decimal128,
-    },
+    cantProductos: { type: Number },
+    subtotal: { type: Number },
+    IVA: { type: Number },
+    total: { type: Number },
   },
   created_at: {
     type: Date,

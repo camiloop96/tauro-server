@@ -3,7 +3,7 @@ import { ICustomer } from "../types/CustomerTypes";
 
 const customerSchema = new Schema<ICustomer>({
   nombres: String,
-  cedula: String,
+  cedula: Number,
   celular: Number,
   addressList: [
     {

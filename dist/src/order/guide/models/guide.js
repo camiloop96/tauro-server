@@ -20,29 +20,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const productSchema = new mongoose_1.Schema({
-    producto: {
-        type: mongoose_1.Types.ObjectId,
-        ref: "Product",
+const guideSchema = new mongoose_1.Schema({
+    number: {
+        type: String,
         required: true,
-    },
-    cantidad: {
-        type: Number,
-        required: true,
-    },
-    iva: {
-        type: mongoose_1.Types.Decimal128,
-        required: true,
-    },
-    total: {
-        type: mongoose_1.Types.Decimal128,
-        required: true,
-    },
-}, {
-    timestamps: {
-        createdAt: "created_at",
-        updatedAt: "updated_at",
+        unique: true,
     },
 });
-const ProductItem = mongoose_1.default.model("ProductItem", productSchema);
-exports.default = ProductItem;
+const GuideModel = mongoose_1.default.model("Guide", guideSchema);
+exports.default = GuideModel;
