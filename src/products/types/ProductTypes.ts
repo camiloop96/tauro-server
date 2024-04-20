@@ -13,5 +13,4 @@ export interface IProductItem {
   iva?: number;
   total?: number;
   created_at: Date;
-  hola: string
 }
