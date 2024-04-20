@@ -5,7 +5,7 @@ export const LogoutController = async (req: Request, res: Response) => {
   console.log(
     `${getCurrentDate()} ${
       req.method
-    } simora/api/authentication/security/authentication/login/`
+    } simora/api/authentication/security/authentication/logout/`
   );
   try {
     return res.status(200).json({ message: "Sesión cerrada exitosamente" });

@@ -16,20 +16,20 @@ export const LoginController = async (req: Request, res: Response) => {
 
     // Verificar si se proporcionó un correo electrónico
     if (!username) {
-      return res.status(400).json({ message: "Por favor, ingrese un usuario" });
+      return res.status(400).json({ error: "Por favor, ingrese un usuario" });
     }
 
     // Verificar si se proporcionó una contraseña
     if (!password) {
       return res
         .status(400)
-        .json({ message: "Por favor, ingrese una contraseña" });
+        .json({ error: "Por favor, ingrese una contraseña" });
     }
 
     // Verificar si el correo electrónico existe
     const credentials = await CredentialsModel.findOne({ username });
     if (!credentials) {
-      return res.status(401).json({ message: "Credenciales inválidas" });
+      return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
     // Verificar la contraseña
@@ -38,7 +38,7 @@ export const LoginController = async (req: Request, res: Response) => {
       credentials.password
     );
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Credenciales inválidas" });
+      return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
     // Obtener el usuario asociado a las credenciales
@@ -47,7 +47,7 @@ export const LoginController = async (req: Request, res: Response) => {
     // Validar existencia de usuario
     if (!user) {
       return res.status(403).json({
-        message: "Credenciales inválidas",
+        error: "Credenciales inválidas",
       });
     }
 
@@ -61,7 +61,6 @@ export const LoginController = async (req: Request, res: Response) => {
     // Respuesta
     res.status(200).json({ token });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
-
