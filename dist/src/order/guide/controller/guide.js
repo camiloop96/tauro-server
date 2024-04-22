@@ -16,7 +16,7 @@ exports.generateUniqueGuideNumber = void 0;
 const guide_1 = __importDefault(require("../models/guide"));
 // Función para generar un número de guía único y consecutivo
 const generateUniqueGuideNumber = () => __awaiter(void 0, void 0, void 0, function* () {
-    let lastGuideNumberInDatabase = 11282;
+    let lastGuideNumberInDatabase = 23211;
     // Consulta el último número de guía almacenado en la base de datos
     const lastGuide = yield guide_1.default.findOne({}, {}, { sort: { number: -1 } });
     if (lastGuide) {

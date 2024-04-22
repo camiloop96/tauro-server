@@ -19,9 +19,9 @@ const ListProductsController = (req, res) => __awaiter(void 0, void 0, void 0, f
     console.log(`${(0, dateManager_1.getCurrentDate)()} GET simora/api/product/all/`);
     try {
         // Consulta todos los productos en la base de datos
-        const productos = yield ProductModel_1.default.find();
+        const products = yield ProductModel_1.default.find();
         // Envía la lista de productos como respuesta
-        res.status(200).json(productos);
+        res.status(200).json(products);
     }
     catch (error) {
         // Manejo de errores
