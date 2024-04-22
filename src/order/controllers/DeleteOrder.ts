@@ -14,12 +14,7 @@ export const DeleteOrderController = async (req: Request, res: Response) => {
       });
     }
     for (const orderItem of data) {
-      // Encuentra el order por su _id
-      console.log(orderItem);
-
       const order = await OrderModel.findById(orderItem);
-
-      console.log(order);
 
       if (!order) {
         console.log(`order con _id ${orderItem} no encontrado.`);
