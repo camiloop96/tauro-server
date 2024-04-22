@@ -34,7 +34,6 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     if (
       !envio.datos.direccion ||
       !envio.datos.barrio ||
-      !envio.datos.localidad ||
       !envio.datos.ciudad ||
       !envio.datos.departamento
     ) {
