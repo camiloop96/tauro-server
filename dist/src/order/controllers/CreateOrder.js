@@ -38,10 +38,9 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 error: "Faltan datos del cliente o están incompletos",
             });
         }
-        if (!envio.datos.direccion ||
-            !envio.datos.barrio ||
-            !envio.datos.localidad ||
-            !envio.datos.ciudad ||
+        if (!envio.datos.direccion &&
+            !envio.datos.barrio &&
+            !envio.datos.ciudad &&
             !envio.datos.departamento) {
             return res.status(400).json({
                 error: "La dirección de envío es incompleta",
@@ -123,8 +122,8 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
             let nombreProducto = itemProducto.product.nombre;
             let productExist = yield ProductModel_1.default.findOne({ nombre: nombreProducto });
             if (productExist) {
-                let ivaValue = productExist.precio * (19 / 100);
-                let subtotal = productExist.precio * itemProducto.cantidad;
+                let ivaValue = productExist.price * (19 / 100);
+                let subtotal = productExist.price * itemProducto.cantidad;
                 let productoItem = {
                     producto: productExist._id,
                     cantidad: itemProducto.cantidad,

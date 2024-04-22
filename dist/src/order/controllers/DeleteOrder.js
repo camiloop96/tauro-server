@@ -27,9 +27,7 @@ const DeleteOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         }
         for (const orderItem of data) {
             // Encuentra el order por su _id
-            console.log(orderItem);
             const order = yield OrderModel_1.default.findById(orderItem);
-            console.log(order);
             if (!order) {
                 console.log(`order con _id ${orderItem} no encontrado.`);
                 continue;
@@ -39,7 +37,6 @@ const DeleteOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
             yield guide_1.default.findOneAndDelete({ number: orderGuide });
             // Elimina el order principal
             yield OrderModel_1.default.findByIdAndDelete(orderItem);
-            console.log(`Orden con _id ${orderItem} eliminado correctamente.`);
         }
         res.status(200).json({ msg: "Pedidos eliminados correctamente" });
     }

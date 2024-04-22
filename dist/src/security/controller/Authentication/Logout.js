@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogoutController = void 0;
 const dateManager_1 = require("../../../utils/dateManager");
 const LogoutController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(`${(0, dateManager_1.getCurrentDate)()} ${req.method} simora/api/authentication/security/authentication/login/`);
+    console.log(`${(0, dateManager_1.getCurrentDate)()} ${req.method} simora/api/authentication/security/authentication/logout/`);
     try {
         return res.status(200).json({ message: "Sesión cerrada exitosamente" });
     }

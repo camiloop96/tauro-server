@@ -13,10 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NormalizeController = void 0;
-const ProductModel_1 = __importDefault(require("../models/ProductModel"));
 const dateManager_1 = require("../../utils/dateManager");
+const ProductModel_1 = __importDefault(require("../models/ProductModel"));
 const NormalizeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(`${(0, dateManager_1.getCurrentDate)()} GET simora/api/product/create/`);
+    console.log(`${(0, dateManager_1.getCurrentDate)()} GET simora/api/product/normalize/`);
     const { products } = req.body;
     // Lista para almacenar los nombres de los productos que no se encontraron
     const notFoundProducts = [];
@@ -26,9 +26,7 @@ const NormalizeController = (req, res) => __awaiter(void 0, void 0, void 0, func
         // Iterar sobre los productos recibidos
         for (const product of products) {
             // Buscar el producto en la colección de MongoDB
-            const foundProduct = yield ProductModel_1.default.findOne({
-                nombre: product.nombre,
-            });
+            const foundProduct = yield ProductModel_1.default.findOne({ name: product.nombre });
             // Si el producto no se encuentra, agregar su nombre a la lista de errores
             if (!foundProduct) {
                 notFoundProducts.push(product.nombre);
@@ -39,8 +37,8 @@ const NormalizeController = (req, res) => __awaiter(void 0, void 0, void 0, func
                     cantidad: product.cantidad,
                     product: {
                         _id: foundProduct._id,
-                        nombre: foundProduct.nombre,
-                        precio: foundProduct.precio,
+                        name: foundProduct.name,
+                        price: foundProduct.price,
                     },
                 });
             }

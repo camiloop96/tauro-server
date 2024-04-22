@@ -37,7 +37,7 @@ const CreateProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
             });
         }
         // Comprobaciones de duplicidad
-        const existingProduct = yield ProductModel_1.default.findOne({ nombre });
+        const existingProduct = yield ProductModel_1.default.findOne({ name: nombre });
         if (existingProduct) {
             return res.status(404).json({
                 message: "El producto ya existe",

@@ -7,7 +7,7 @@ export const ListProductsController = async (req: Request, res: Response) => {
     try {
       // Consulta todos los productos en la base de datos
       const productos = await ProductModel.find();
-  
+
       // Envía la lista de productos como respuesta
       res.status(200).json(productos);
     } catch (error) {

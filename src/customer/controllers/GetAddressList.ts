@@ -21,7 +21,7 @@ export const GetAddressList = async (req: Request, res: Response) => {
         error: "Cliente no existe",
       });
     }
-
+    
     let addressList: IAddressItem[] = [];
     if (customerExist.addressList && customerExist.addressList.length > 0) {
       addressList = await Promise.all(
@@ -31,6 +31,7 @@ export const GetAddressList = async (req: Request, res: Response) => {
           return addressItem as AddressListItem;
         })
       );
+
     } else {
       return res.status(500).json({
         error: "Error 600",

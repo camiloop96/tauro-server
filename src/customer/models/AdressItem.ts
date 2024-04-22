@@ -12,7 +12,6 @@ const addressSchema = new Schema<IAddressItem>({
   },
   localidad: {
     type: String,
-    required: true,
   },
   barrio: {
     type: String,
