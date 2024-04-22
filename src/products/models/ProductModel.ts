@@ -3,11 +3,11 @@ import { IProduct } from "../types/ProductTypes";
 
 const productSchema = new Schema<IProduct>(
   {
-    nombre: {
+    name: {
       type: String,
       required: true,
     },
-    precio: {
+    price: {
       type: Number,
       required: true,
     },
@@ -20,6 +20,6 @@ const productSchema = new Schema<IProduct>(
   }
 );
 
-const ProductModel = model<IProduct>("Producto", productSchema);
+const ProductModel = model<IProduct>("Product", productSchema);
 
 export default ProductModel;

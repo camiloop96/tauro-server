@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
 
 export interface IProduct {
-  nombre: string;
-  precio: number;
+  name: string;
+  price: number;
 }
 
 export interface IProductItem {

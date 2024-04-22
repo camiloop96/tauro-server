@@ -24,30 +24,30 @@ const LoginController = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { username, password } = req.body;
         // Verificar si se proporcionó un correo electrónico
         if (!username) {
-            return res.status(400).json({ message: "Por favor, ingrese un usuario" });
+            return res.status(400).json({ error: "Por favor, ingrese un usuario" });
         }
         // Verificar si se proporcionó una contraseña
         if (!password) {
             return res
                 .status(400)
-                .json({ message: "Por favor, ingrese una contraseña" });
+                .json({ error: "Por favor, ingrese una contraseña" });
         }
         // Verificar si el correo electrónico existe
         const credentials = yield CredentialModel_1.default.findOne({ username });
         if (!credentials) {
-            return res.status(401).json({ message: "Credenciales inválidas" });
+            return res.status(401).json({ error: "Credenciales inválidas" });
         }
         // Verificar la contraseña
         const passwordMatch = yield (0, passwordManager_1.compareHashPassword)(password, credentials.password);
         if (!passwordMatch) {
-            return res.status(401).json({ message: "Credenciales inválidas" });
+            return res.status(401).json({ error: "Credenciales inválidas" });
         }
         // Obtener el usuario asociado a las credenciales
         const user = yield UserModel_1.default.findById(credentials.user);
         // Validar existencia de usuario
         if (!user) {
             return res.status(403).json({
-                message: "Credenciales inválidas",
+                error: "Credenciales inválidas",
             });
         }
         // Creacción del token
@@ -60,7 +60,7 @@ const LoginController = (req, res) => __awaiter(void 0, void 0, void 0, function
         res.status(200).json({ token });
     }
     catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ error: error.message });
     }
 });
 exports.LoginController = LoginController;

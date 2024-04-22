@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import ProductModel from "../models/ProductModel";
 import { getCurrentDate } from "../../utils/dateManager";
+import ProductModel from "../models/ProductModel";
 
 export const NormalizeController = async (req: Request, res: Response) => {
-  console.log(`${getCurrentDate()} GET simora/api/product/create/`);
+  console.log(`${getCurrentDate()} GET simora/api/product/normalize/`);
   const { products } = req.body;
   // Lista para almacenar los nombres de los productos que no se encontraron
   const notFoundProducts: string[] = [];
-
+  
   try {
     // Lista para almacenar los productos encontrados
     const foundProducts: any[] = [];
@@ -15,9 +15,7 @@ export const NormalizeController = async (req: Request, res: Response) => {
     // Iterar sobre los productos recibidos
     for (const product of products) {
       // Buscar el producto en la colección de MongoDB
-      const foundProduct = await ProductModel.findOne({
-        nombre: product.nombre,
-      });
+      const foundProduct = await ProductModel.findOne({name: product.nombre})
 
       // Si el producto no se encuentra, agregar su nombre a la lista de errores
       if (!foundProduct) {
@@ -28,8 +26,8 @@ export const NormalizeController = async (req: Request, res: Response) => {
           cantidad: product.cantidad,
           product: {
             _id: foundProduct._id,
-            nombre: foundProduct.nombre,
-            precio: foundProduct.precio,
+            name: foundProduct.name,
+            price: foundProduct.price,
           },
         });
       }

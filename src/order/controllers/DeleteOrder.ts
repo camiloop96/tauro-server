@@ -14,6 +14,7 @@ export const DeleteOrderController = async (req: Request, res: Response) => {
       });
     }
     for (const orderItem of data) {
+      // Encuentra el order por su _id
       const order = await OrderModel.findById(orderItem);
 
       if (!order) {
@@ -27,7 +28,6 @@ export const DeleteOrderController = async (req: Request, res: Response) => {
 
       // Elimina el order principal
       await OrderModel.findByIdAndDelete(orderItem);
-      console.log(`Orden con _id ${orderItem} eliminado correctamente.`);
     }
     res.status(200).json({ msg: "Pedidos eliminados correctamente" });
   } catch (error) {

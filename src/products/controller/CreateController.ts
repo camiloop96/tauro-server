@@ -25,7 +25,7 @@ export const CreateProductController = async (req: Request, res: Response) => {
     }
 
     // Comprobaciones de duplicidad
-    const existingProduct = await ProductModel.findOne({ nombre });
+    const existingProduct = await ProductModel.findOne({ name: nombre });
     if (existingProduct) {
       return res.status(404).json({
         message: "El producto ya existe",

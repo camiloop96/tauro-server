@@ -128,8 +128,8 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       let nombreProducto = itemProducto.product.nombre;
       let productExist = await ProductModel.findOne({ nombre: nombreProducto });
       if (productExist) {
-        let ivaValue = productExist.precio * (19 / 100);
-        let subtotal = productExist.precio * itemProducto.cantidad;
+        let ivaValue = productExist.price * (19 / 100);
+        let subtotal = productExist.price * itemProducto.cantidad;
         let productoItem = {
           producto: productExist._id,
           cantidad: itemProducto.cantidad,
