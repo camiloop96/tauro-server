@@ -20,7 +20,6 @@ const CustomerCreate = (req, res) => __awaiter(void 0, void 0, void 0, function*
     console.log(`${(0, dateManager_1.getCurrentDate)()} POST simora/api/customer/create`);
     try {
         const { nombres, cedula, celular, datosEnvio } = req.body;
-        console.log(nombres, celular, cedula, datosEnvio);
         // Verificar que se proporcionaron los campos obligatorios
         if (!nombres) {
             return res.status(400).json({ mensaje: "Faltan campo nombres" });

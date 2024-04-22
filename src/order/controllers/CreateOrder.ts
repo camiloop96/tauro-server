@@ -30,7 +30,6 @@ export const CreateOrderController = async (req: Request, res: Response) => {
         error: "Faltan datos del cliente o están incompletos",
       });
     }
-    console.log(envio.datos);
 
     if (
       !envio.datos.direccion &&

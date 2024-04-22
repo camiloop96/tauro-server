@@ -16,7 +16,7 @@ export const NormalizeController = async (req: Request, res: Response) => {
     for (const product of products) {
       // Buscar el producto en la colección de MongoDB
       const foundProduct = await ProductModel.findOne({name: product.name})
-
+  
       // Si el producto no se encuentra, agregar su nombre a la lista de errores
       if (!foundProduct) {
         notFoundProducts.push(product.name);

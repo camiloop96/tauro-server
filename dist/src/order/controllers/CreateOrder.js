@@ -38,7 +38,6 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 error: "Faltan datos del cliente o están incompletos",
             });
         }
-        console.log(envio.datos);
         if (!envio.datos.direccion &&
             !envio.datos.barrio &&
             !envio.datos.ciudad &&

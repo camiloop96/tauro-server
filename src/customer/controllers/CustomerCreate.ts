@@ -9,8 +9,6 @@ export const CustomerCreate = async (req: Request, res: Response) => {
   try {
     const { nombres, cedula, celular, datosEnvio } = req.body;
 
-    console.log(nombres, celular, cedula, datosEnvio);
-
     // Verificar que se proporcionaron los campos obligatorios
     if (!nombres) {
       return res.status(400).json({ mensaje: "Faltan campo nombres" });
