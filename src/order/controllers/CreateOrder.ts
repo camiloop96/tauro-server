@@ -13,6 +13,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     let { factura } = req.body || {};
     let { cliente, pedido, envio, pago, costos } = factura || {};
 
+    
     if (!factura) {
       return res.status(400).json({
         error: "El formato de factura tiene error o no existe",
@@ -104,6 +105,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       };
       newCustomer = await CustomerModel.create(newCustomerData);
       createOrder.cliente = newCustomer._id;
+      createOrder.envio.datos = newAddressItem
     }
 
     if (envio.datos) {
@@ -137,8 +139,6 @@ export const CreateOrderController = async (req: Request, res: Response) => {
           total: subtotal,
           created_at: new Date(Date.now()),
         };
-        console.log(productExist);
-        
         arr.push(productoItem);
       }
     }
@@ -168,7 +168,9 @@ export const CreateOrderController = async (req: Request, res: Response) => {
           cantProductos += order.cantidad;
         }
       });
-      total = subtotal + envio;
+      total = subtotal + envio + iva;
+     
+      
       return { subtotal, iva, total, cantProductos };
     };
 

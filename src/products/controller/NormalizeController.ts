@@ -3,11 +3,21 @@ import { getCurrentDate } from "../../utils/dateManager";
 import ProductModel from "../models/ProductModel";
 
 export const NormalizeController = async (req: Request, res: Response) => {
+  // Encabezado del 
   console.log(`${getCurrentDate()} GET simora/api/product/normalize/`);
+  // Obtencion del contenido de la peticion
   const { products } = req.body;
+  console.log(products);
+  
   // Lista para almacenar los nombres de los productos que no se encontraron
   const notFoundProducts: string[] = [];
   
+  if(!products) {
+    return res.status(400).json({
+      error: "No se proporciono productos en la peticion"
+    })
+  }
+
   try {
     // Lista para almacenar los productos encontrados
     const foundProducts: any[] = [];
@@ -32,9 +42,6 @@ export const NormalizeController = async (req: Request, res: Response) => {
         });
       }
     }
-
-    console.log(foundProducts);
-    
 
     // Si hay productos que no se encontraron, devolver un mensaje de error
     if (notFoundProducts.length > 0) {
