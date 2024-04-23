@@ -57,7 +57,8 @@ export interface OrderQuery {
   subtotal?: number;
   envio?: number;
   total?: number;
-  infoAdic?: string;
+  infoAdic?: string | null;
+  horario?: string | null;
   medioPago?: string;
   comprobante?: string;
 }

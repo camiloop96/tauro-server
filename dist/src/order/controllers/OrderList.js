@@ -17,7 +17,7 @@ const dateManager_1 = require("../../utils/dateManager");
 const OrderModel_1 = __importDefault(require("../models/OrderModel"));
 const CustomerModel_1 = __importDefault(require("../../customer/models/CustomerModel"));
 const OrderList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
     console.log(`${(0, dateManager_1.getCurrentDate)()} GET api/pos/order/list/by-date/${req.params.date}`);
     let { date } = req.params;
     if (!date) {
@@ -44,10 +44,11 @@ const OrderList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             orderObj.barrio = (_h = (_g = order === null || order === void 0 ? void 0 : order.envio) === null || _g === void 0 ? void 0 : _g.datos) === null || _h === void 0 ? void 0 : _h.barrio;
             orderObj.direccion = (_k = (_j = order === null || order === void 0 ? void 0 : order.envio) === null || _j === void 0 ? void 0 : _j.datos) === null || _k === void 0 ? void 0 : _k.direccion;
             orderObj.subtotal = (_l = order === null || order === void 0 ? void 0 : order.cobros) === null || _l === void 0 ? void 0 : _l.subtotal;
-            orderObj.envio = (_m = order === null || order === void 0 ? void 0 : order.cobros) === null || _m === void 0 ? void 0 : _m.subtotal;
+            orderObj.envio = (_m = order === null || order === void 0 ? void 0 : order.costos) === null || _m === void 0 ? void 0 : _m.envio;
             orderObj.total = (_o = order === null || order === void 0 ? void 0 : order.cobros) === null || _o === void 0 ? void 0 : _o.total;
             orderObj.medioPago = (_p = order === null || order === void 0 ? void 0 : order.pago) === null || _p === void 0 ? void 0 : _p.tipo;
-            orderObj.comprobante = (_q = order === null || order === void 0 ? void 0 : order.pago) === null || _q === void 0 ? void 0 : _q.tipo;
+            orderObj.infoAdic = (_r = (_q = order === null || order === void 0 ? void 0 : order.envio) === null || _q === void 0 ? void 0 : _q.info) === null || _r === void 0 ? void 0 : _r.infoAd;
+            orderObj.horario = (_t = (_s = order === null || order === void 0 ? void 0 : order.envio) === null || _s === void 0 ? void 0 : _s.info) === null || _t === void 0 ? void 0 : _t.horario;
             arrEntregas.push(orderObj);
         }
         res.status(200).json(arrEntregas);

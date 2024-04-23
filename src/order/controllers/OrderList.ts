@@ -37,10 +37,11 @@ export const OrderList = async (req: Request, res: Response) => {
       orderObj.barrio = order?.envio?.datos?.barrio;
       orderObj.direccion = order?.envio?.datos?.direccion;
       orderObj.subtotal = order?.cobros?.subtotal;
-      orderObj.envio = order?.cobros?.subtotal;
+      orderObj.envio = order?.costos?.envio;
       orderObj.total = order?.cobros?.total;
       orderObj.medioPago = order?.pago?.tipo;
-      orderObj.comprobante = order?.pago?.tipo;
+      orderObj.infoAdic = order?.envio?.info?.infoAd
+      orderObj.horario = order?.envio?.info?.horario
       arrEntregas.push(orderObj);
     }
 
