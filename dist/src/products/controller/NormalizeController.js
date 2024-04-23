@@ -16,20 +16,28 @@ exports.NormalizeController = void 0;
 const dateManager_1 = require("../../utils/dateManager");
 const ProductModel_1 = __importDefault(require("../models/ProductModel"));
 const NormalizeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Encabezado del 
     console.log(`${(0, dateManager_1.getCurrentDate)()} GET simora/api/product/normalize/`);
+    // Obtencion del contenido de la peticion
     const { products } = req.body;
+    console.log(products);
     // Lista para almacenar los nombres de los productos que no se encontraron
     const notFoundProducts = [];
+    if (!products) {
+        return res.status(400).json({
+            error: "No se proporciono productos en la peticion"
+        });
+    }
     try {
         // Lista para almacenar los productos encontrados
         const foundProducts = [];
         // Iterar sobre los productos recibidos
         for (const product of products) {
             // Buscar el producto en la colección de MongoDB
-            const foundProduct = yield ProductModel_1.default.findOne({ name: product.nombre });
+            const foundProduct = yield ProductModel_1.default.findOne({ name: product.name });
             // Si el producto no se encuentra, agregar su nombre a la lista de errores
             if (!foundProduct) {
-                notFoundProducts.push(product.nombre);
+                notFoundProducts.push(product.name);
             }
             else {
                 // Si se encuentra, agregarlo a la lista de productos encontrados

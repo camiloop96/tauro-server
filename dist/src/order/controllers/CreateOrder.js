@@ -104,6 +104,7 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
             };
             newCustomer = yield CustomerModel_1.default.create(newCustomerData);
             createOrder.cliente = newCustomer._id;
+            createOrder.envio.datos = newAddressItem;
         }
         if (envio.datos) {
             createOrder.envio.info = envio.info;
@@ -159,7 +160,7 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                     cantProductos += order.cantidad;
                 }
             });
-            total = subtotal + envio;
+            total = subtotal + envio + iva;
             return { subtotal, iva, total, cantProductos };
         };
         let { subtotal, iva, total, cantProductos } = getTotalPriceOrder((_a = createOrder === null || createOrder === void 0 ? void 0 : createOrder.pedido) === null || _a === void 0 ? void 0 : _a.productos, (_b = createOrder === null || createOrder === void 0 ? void 0 : createOrder.costos) === null || _b === void 0 ? void 0 : _b.envio);
