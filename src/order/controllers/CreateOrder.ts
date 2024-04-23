@@ -184,6 +184,8 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     createOrder.cobros.IVA = iva;
     createOrder.cobros.total = total;
 
+    console.log(createOrder.cobros);
+    
     await createOrder.save();
 
     res.status(200).json({
