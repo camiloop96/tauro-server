@@ -137,6 +137,8 @@ export const CreateOrderController = async (req: Request, res: Response) => {
           total: subtotal,
           created_at: new Date(Date.now()),
         };
+        console.log(productExist);
+        
         arr.push(productoItem);
       }
     }
