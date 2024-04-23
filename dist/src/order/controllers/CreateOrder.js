@@ -104,6 +104,7 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
             };
             newCustomer = yield CustomerModel_1.default.create(newCustomerData);
             createOrder.cliente = newCustomer._id;
+            createOrder.envio.datos = newAddressItem;
         }
         if (envio.datos) {
             createOrder.envio.info = envio.info;
