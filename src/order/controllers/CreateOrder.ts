@@ -13,7 +13,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     let { factura } = req.body || {};
     let { cliente, pedido, envio, pago, costos } = factura || {};
 
-    
+
     if (!factura) {
       return res.status(400).json({
         error: "El formato de factura tiene error o no existe",
@@ -126,16 +126,13 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     let productos = pedido.productos;
     let arr = [];
     for (let itemProducto of productos) {
-      let nombreProducto = itemProducto.product.nombre;
-      let productExist = await ProductModel.findOne({ nombre: nombreProducto });
+      let idProducto = itemProducto.product._id;
+      let productExist = await ProductModel.findById(idProducto);
       if (productExist) {
-        let ivaValue = productExist.price * (19 / 100);
         let subtotal = productExist.price * itemProducto.cantidad;
         let productoItem = {
           producto: productExist._id,
           cantidad: itemProducto.cantidad,
-          base: subtotal - ivaValue,
-          iva: ivaValue * itemProducto.cantidad,
           total: subtotal,
           created_at: new Date(Date.now()),
         };
@@ -145,38 +142,43 @@ export const CreateOrderController = async (req: Request, res: Response) => {
 
     // Ingresar productos al envio
     createOrder.pedido.productos = arr;
+
     let orderGuide = await generateUniqueGuideNumber();
     createOrder.envio.guia = orderGuide;
-
     // Cobros
     let getTotalPriceOrder = (productos: IProductItem[], envio: number) => {
       let total = 0;
       let subtotal = 0;
-      let iva = 0;
       let cantProductos = 0;
-      productos.forEach((order: IProductItem) => {
-        if (order.total !== undefined) {
-          total += order.total;
-        }
-        if (order.base !== undefined) {
-          subtotal += order.base;
-        }
-        if (order.iva !== undefined) {
-          iva += order.iva;
-        }
-        if (order.cantidad !== undefined) {
-          cantProductos += order.cantidad;
-        }
-      });
-      total = subtotal + envio + iva;
-     
       
+      // Suma de los totales de los productos
+      const totalProductos: any = productos.reduce((acc, producto) => {
+        if (producto.total !== undefined) {
+          return acc + producto.total;
+        }
+        return acc;
+      }, 0);
+      
+      // Suma de los totales de los productos
+      const cantidadProductos: any = productos.reduce((acc, producto) => {
+        if (producto.total !== undefined) {
+          return acc + producto.cantidad;
+        }
+        return acc;
+      }, 0);
+
+      let iva = totalProductos * 0.19;
+      total = totalProductos + envio
+      subtotal = totalProductos;
+      cantProductos = cantidadProductos
+      
+
       return { subtotal, iva, total, cantProductos };
     };
 
     let { subtotal, iva, total, cantProductos } = getTotalPriceOrder(
       createOrder?.pedido?.productos,
-      createOrder?.costos?.envio
+      createOrder?.costos?.envio || 0
     );
 
     createOrder.cobros.cantProductos = cantProductos;
@@ -184,8 +186,6 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     createOrder.cobros.IVA = iva;
     createOrder.cobros.total = total;
 
-    console.log(createOrder.cobros);
-    
     await createOrder.save();
 
     res.status(200).json({

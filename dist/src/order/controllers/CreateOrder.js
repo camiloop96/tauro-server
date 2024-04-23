@@ -120,16 +120,13 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         let productos = pedido.productos;
         let arr = [];
         for (let itemProducto of productos) {
-            let nombreProducto = itemProducto.product.nombre;
-            let productExist = yield ProductModel_1.default.findOne({ nombre: nombreProducto });
+            let idProducto = itemProducto.product._id;
+            let productExist = yield ProductModel_1.default.findById(idProducto);
             if (productExist) {
-                let ivaValue = productExist.price * (19 / 100);
                 let subtotal = productExist.price * itemProducto.cantidad;
                 let productoItem = {
                     producto: productExist._id,
                     cantidad: itemProducto.cantidad,
-                    base: subtotal - ivaValue,
-                    iva: ivaValue * itemProducto.cantidad,
                     total: subtotal,
                     created_at: new Date(Date.now()),
                 };
@@ -144,26 +141,28 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         let getTotalPriceOrder = (productos, envio) => {
             let total = 0;
             let subtotal = 0;
-            let iva = 0;
             let cantProductos = 0;
-            productos.forEach((order) => {
-                if (order.total !== undefined) {
-                    total += order.total;
+            // Suma de los totales de los productos
+            const totalProductos = productos.reduce((acc, producto) => {
+                if (producto.total !== undefined) {
+                    return acc + producto.total;
                 }
-                if (order.base !== undefined) {
-                    subtotal += order.base;
+                return acc;
+            }, 0);
+            // Suma de los totales de los productos
+            const cantidadProductos = productos.reduce((acc, producto) => {
+                if (producto.total !== undefined) {
+                    return acc + producto.cantidad;
                 }
-                if (order.iva !== undefined) {
-                    iva += order.iva;
-                }
-                if (order.cantidad !== undefined) {
-                    cantProductos += order.cantidad;
-                }
-            });
-            total = subtotal + envio + iva;
+                return acc;
+            }, 0);
+            let iva = totalProductos * 0.19;
+            total = totalProductos + envio;
+            subtotal = totalProductos;
+            cantProductos = cantidadProductos;
             return { subtotal, iva, total, cantProductos };
         };
-        let { subtotal, iva, total, cantProductos } = getTotalPriceOrder((_a = createOrder === null || createOrder === void 0 ? void 0 : createOrder.pedido) === null || _a === void 0 ? void 0 : _a.productos, (_b = createOrder === null || createOrder === void 0 ? void 0 : createOrder.costos) === null || _b === void 0 ? void 0 : _b.envio);
+        let { subtotal, iva, total, cantProductos } = getTotalPriceOrder((_a = createOrder === null || createOrder === void 0 ? void 0 : createOrder.pedido) === null || _a === void 0 ? void 0 : _a.productos, ((_b = createOrder === null || createOrder === void 0 ? void 0 : createOrder.costos) === null || _b === void 0 ? void 0 : _b.envio) || 0);
         createOrder.cobros.cantProductos = cantProductos;
         createOrder.cobros.subtotal = subtotal;
         createOrder.cobros.IVA = iva;
