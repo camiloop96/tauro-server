@@ -13,7 +13,6 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     let { factura } = req.body || {};
     let { cliente, pedido, envio, pago, costos } = factura || {};
 
-
     if (!factura) {
       return res.status(400).json({
         error: "El formato de factura tiene error o no existe",
@@ -49,7 +48,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
 
     // Desestructuracion de datos de envio
     let { datos } = envio || {};
-  
+
     let datosEnvio: IAddressItem = datos;
     let direccion = datosEnvio.direccion;
 
@@ -97,7 +96,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       };
 
       let newAddressItem = await AddressItemModel.create(envioData);
-      
+
       let newCustomerData: ICustomer = {
         nombres: cliente.nombres,
         cedula: cliente.cedula,
@@ -107,7 +106,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       };
       newCustomer = await CustomerModel.create(newCustomerData);
       createOrder.cliente = newCustomer._id;
-      createOrder.envio.datos = newAddressItem
+      createOrder.envio.datos = newAddressItem;
     }
 
     if (envio.datos) {
@@ -152,7 +151,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       let total = 0;
       let subtotal = 0;
       let cantProductos = 0;
-      
+
       // Suma de los totales de los productos
       const totalProductos: any = productos.reduce((acc, producto) => {
         if (producto.total !== undefined) {
@@ -160,7 +159,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
         }
         return acc;
       }, 0);
-      
+
       // Suma de los totales de los productos
       const cantidadProductos: any = productos.reduce((acc, producto) => {
         if (producto.total !== undefined) {
@@ -170,10 +169,9 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       }, 0);
 
       let iva = totalProductos * 0.19;
-      total = totalProductos + envio
+      total = totalProductos + envio;
       subtotal = totalProductos;
-      cantProductos = cantidadProductos
-      
+      cantProductos = cantidadProductos;
 
       return { subtotal, iva, total, cantProductos };
     };
