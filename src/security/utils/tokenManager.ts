@@ -11,7 +11,7 @@ export const createToken = (payload: any): string => {
     throw new Error("JWT_SECRET no está definido en las variables de entorno");
   }
   // Crear el token JWT con un vencimiento de 1 hora
-  const token: string = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+  const token: string = jwt.sign(payload, JWT_SECRET);
   return token;
 };
 

@@ -15,11 +15,6 @@ export const CreateCoverageCityController = async (
       error: "Faltan campos obligatorios",
     });
   }
-  if (isNaN(envio) || envio === 0) {
-    return res.status(400).json({
-      error: "El envío debe ser un numero y debe ser diferente de 0",
-    });
-  }
 
   if (tipo !== "local" && tipo !== "nacional") {
     return res.status(400).json({

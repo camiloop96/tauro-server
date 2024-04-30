@@ -2,8 +2,9 @@ import { Types } from "mongoose";
 
 export interface IAddressItem extends Document {
   _id: Types.ObjectId;
-  departamento: string;
-  ciudad: string;
+  departamento?: string;
+  ciudad?: string;
+  region?: Types.ObjectId
   localidad: string;
   barrio: string;
   direccion: string;

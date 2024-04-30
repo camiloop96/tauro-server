@@ -62,3 +62,12 @@ export interface OrderQuery {
   medioPago?: string;
   comprobante?: string;
 }
+
+export interface IQueryOrderDetail {
+  guia: string;
+  fechaEntrega: string;
+  subtotal: number;
+  envio: number;
+  total: number;
+  product: any;
+}
