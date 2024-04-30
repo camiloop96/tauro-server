@@ -16,16 +16,15 @@ exports.NormalizeController = void 0;
 const dateManager_1 = require("../../utils/dateManager");
 const ProductModel_1 = __importDefault(require("../models/ProductModel"));
 const NormalizeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // Encabezado del 
+    // Encabezado del
     console.log(`${(0, dateManager_1.getCurrentDate)()} GET simora/api/product/normalize/`);
     // Obtencion del contenido de la peticion
     const { products } = req.body;
-    console.log(products);
     // Lista para almacenar los nombres de los productos que no se encontraron
     const notFoundProducts = [];
     if (!products) {
         return res.status(400).json({
-            error: "No se proporciono productos en la peticion"
+            error: "No se proporciono productos en la peticion",
         });
     }
     try {
