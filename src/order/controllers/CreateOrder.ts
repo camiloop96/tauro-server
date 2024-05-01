@@ -6,11 +6,16 @@ import { IAddressItem, ICustomer } from "../../customer/types/CustomerTypes";
 import ProductModel from "../../products/models/ProductModel";
 import { generateUniqueGuideNumber } from "../guide/controller/guide";
 import { IProductItem } from "../../products/types/ProductTypes";
+import { v2 as cloudinary } from "cloudinary";
+import { cloudinaryConfig } from "../../../config/cloudinaryConfig";
+import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
 
 export const CreateOrderController = async (req: Request, res: Response) => {
   try {
     // Desestructuracion de orden
-    let { factura } = req.body || {};
+    let { orderData } = req.body;
+    let orderDecoded = JSON.parse(orderData);
+    let { factura } = orderDecoded;
     let { cliente, pedido, envio, pago, costos } = factura || {};
 
     if (!factura) {
@@ -21,7 +26,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
 
     // Desestructuración de cliente
 
-    let { nombres, celular, cedula } = cliente || {};
+    let { nombres } = cliente || {};
 
     // Comprobacion de nulidad de cliente
     // Validacion del cliente
@@ -118,7 +123,24 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     createOrder.costos = costos;
 
     // Pago
-    createOrder.pago = pago;
+    createOrder.pago.tipo = pago.tipo;
+
+    // Comprobante
+    let imageFile = req.file;
+
+    if (imageFile && pago.tipo === "Anticipado") {
+      let idInvoice = createOrder._id.toString();
+      let exportInvoice = await saveImageToCloudinary(
+        imageFile,
+        "pos/order/invoice/",
+        idInvoice
+      );
+      createOrder.pago.comprobante.url = exportInvoice.url;
+      createOrder.pago.comprobante.asset_id = exportInvoice.asset_id;
+    } else {
+      createOrder.pago.comprobante.url = null;
+      createOrder.pago.comprobante.asset_id = null;
+    }
 
     // Timestamp
     createOrder.created_at = new Date(Date.now());

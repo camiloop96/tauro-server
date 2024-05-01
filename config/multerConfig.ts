@@ -1,13 +1,12 @@
 import multer from "multer";
 
-// Configura multer para guardar los archivos en una carpeta específica
-const storage = multer.diskStorage({
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+// Configuración de multer para manejar form-data
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+    fieldSize: 2 * 1024 * 1024,
   },
 });
-
-// Crea el middleware para manejar la carga de archivos
-const upload = multer({ storage: storage });
-
 export default upload;

@@ -9,7 +9,7 @@ import { DetailOrderController } from "./controllers/OrderDetail";
 const OrderRoutes = Router();
 
 OrderRoutes.get("/list/by-date/:date", OrderList);
-OrderRoutes.post("/create/", upload.single('comprobante'),  CreateOrderController);
+OrderRoutes.post("/create/", upload.single('invoiceImage'),  CreateOrderController);
 OrderRoutes.post("/delete/", DeleteOrderController);
 OrderRoutes.get("/detail/:id", DetailOrderController)
 // OrderRoutes.get("/migrate/", MigrateOrders);
