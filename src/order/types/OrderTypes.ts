@@ -18,7 +18,10 @@ export interface IEnvio {
 
 export interface IPago {
   tipo: string;
-  comprobante: string;
+  comprobante: {
+    url: string | null;
+    asset_id: string | null;
+  };
 }
 
 export interface ICobro {

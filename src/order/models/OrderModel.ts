@@ -76,7 +76,12 @@ const orderSchema = new Schema<IOrden>({
       required: true,
     },
     comprobante: {
-      type: String,
+      url: {
+        type: String,
+      },
+      asset_id: {
+        type: String,
+      },
     },
   },
   costos: {
