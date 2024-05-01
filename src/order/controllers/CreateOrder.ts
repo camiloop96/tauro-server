@@ -137,9 +137,11 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       );
       createOrder.pago.comprobante.url = exportInvoice.url;
       createOrder.pago.comprobante.asset_id = exportInvoice.asset_id;
+      createOrder.pago.comprobante.validated = false;
     } else {
       createOrder.pago.comprobante.url = null;
       createOrder.pago.comprobante.asset_id = null;
+      createOrder.pago.comprobante.validated = null;
     }
 
     // Timestamp

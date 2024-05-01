@@ -82,6 +82,10 @@ const orderSchema = new Schema<IOrden>({
       asset_id: {
         type: String,
       },
+      validated: {
+        type: Boolean,
+        default: null
+      }
     },
   },
   costos: {

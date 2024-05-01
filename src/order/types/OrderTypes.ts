@@ -21,6 +21,7 @@ export interface IPago {
   comprobante: {
     url: string | null;
     asset_id: string | null;
+    validated: boolean | null;
   };
 }
 
@@ -48,6 +49,7 @@ export interface IOrden {
 
 export interface OrderQuery {
   _id?: Types.ObjectId;
+  fechaEntrega?: string;
   guia?: string;
   nombres?: string;
   celular?: number;

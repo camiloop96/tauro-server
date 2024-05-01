@@ -27,6 +27,7 @@ export const OrderList = async (req: Request, res: Response) => {
       let orderObj: OrderQuery = {};
       let customerData = await CustomerModel.findOne({ _id: order.cliente });
       orderObj._id = order?._id;
+      orderObj.fechaEntrega = order?.envio?.fechaEntrega,
       orderObj.guia = order?.envio?.guia;
       orderObj.nombres = customerData?.nombres;
       orderObj.celular = customerData?.celular;
