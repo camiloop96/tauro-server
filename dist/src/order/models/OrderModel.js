@@ -98,7 +98,12 @@ const orderSchema = new mongoose_1.Schema({
             required: true,
         },
         comprobante: {
-            type: String,
+            url: {
+                type: String,
+            },
+            asset_id: {
+                type: String,
+            },
         },
     },
     costos: {

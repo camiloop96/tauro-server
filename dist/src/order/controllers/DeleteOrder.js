@@ -16,6 +16,7 @@ exports.DeleteOrderController = void 0;
 const dateManager_1 = require("../../utils/dateManager");
 const OrderModel_1 = __importDefault(require("../models/OrderModel"));
 const guide_1 = __importDefault(require("../guide/models/guide"));
+const saveImageToCloudinary_1 = require("../../utils/saveImageToCloudinary");
 const DeleteOrderController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`${(0, dateManager_1.getCurrentDate)()} POST api/order/delete/`);
     let data = req.body;
@@ -32,7 +33,17 @@ const DeleteOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 console.log(`order con _id ${orderItem} no encontrado.`);
                 continue;
             }
-            // Elimina rl numero de guia
+            // Eliminar comprobante
+            if (order.pago.tipo === "Anticipado") {
+                let parseId = order._id.toString();
+                let deleteInvoiceFromCloudinary = yield (0, saveImageToCloudinary_1.deleteImagefromCloudinary)("pos/order/invoice/", parseId);
+                if (deleteInvoiceFromCloudinary.result !== "ok") {
+                    return res.status(400).json({
+                        error: "Error interno con el servidor de comprobantes",
+                    });
+                }
+            }
+            //Elimina el numero de guia
             let orderGuide = order.envio.guia;
             yield guide_1.default.findOneAndDelete({ number: orderGuide });
             // Elimina el order principal
