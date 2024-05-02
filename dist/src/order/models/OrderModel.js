@@ -104,6 +104,10 @@ const orderSchema = new mongoose_1.Schema({
             asset_id: {
                 type: String,
             },
+            validated: {
+                type: Boolean,
+                default: null
+            }
         },
     },
     costos: {

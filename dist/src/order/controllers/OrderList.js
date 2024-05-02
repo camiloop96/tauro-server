@@ -17,7 +17,7 @@ const dateManager_1 = require("../../utils/dateManager");
 const OrderModel_1 = __importDefault(require("../models/OrderModel"));
 const CustomerModel_1 = __importDefault(require("../../customer/models/CustomerModel"));
 const OrderList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w;
     console.log(`${(0, dateManager_1.getCurrentDate)()} GET api/pos/order/list/by-date/${req.params.date}`);
     let { date } = req.params;
     if (!date) {
@@ -34,21 +34,23 @@ const OrderList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             let orderObj = {};
             let customerData = yield CustomerModel_1.default.findOne({ _id: order.cliente });
             orderObj._id = order === null || order === void 0 ? void 0 : order._id;
-            orderObj.guia = (_a = order === null || order === void 0 ? void 0 : order.envio) === null || _a === void 0 ? void 0 : _a.guia;
+            (orderObj.fechaEntrega = (_a = order === null || order === void 0 ? void 0 : order.envio) === null || _a === void 0 ? void 0 : _a.fechaEntrega),
+                (orderObj.guia = (_b = order === null || order === void 0 ? void 0 : order.envio) === null || _b === void 0 ? void 0 : _b.guia);
             orderObj.nombres = customerData === null || customerData === void 0 ? void 0 : customerData.nombres;
             orderObj.celular = customerData === null || customerData === void 0 ? void 0 : customerData.celular;
             orderObj.cedula = customerData === null || customerData === void 0 ? void 0 : customerData.cedula;
-            orderObj.departamento = (_b = order === null || order === void 0 ? void 0 : order.envio) === null || _b === void 0 ? void 0 : _b.datos.departamento;
-            orderObj.ciudad = (_d = (_c = order === null || order === void 0 ? void 0 : order.envio) === null || _c === void 0 ? void 0 : _c.datos) === null || _d === void 0 ? void 0 : _d.ciudad;
-            orderObj.localidad = (_f = (_e = order === null || order === void 0 ? void 0 : order.envio) === null || _e === void 0 ? void 0 : _e.datos) === null || _f === void 0 ? void 0 : _f.localidad;
-            orderObj.barrio = (_h = (_g = order === null || order === void 0 ? void 0 : order.envio) === null || _g === void 0 ? void 0 : _g.datos) === null || _h === void 0 ? void 0 : _h.barrio;
-            orderObj.direccion = (_k = (_j = order === null || order === void 0 ? void 0 : order.envio) === null || _j === void 0 ? void 0 : _j.datos) === null || _k === void 0 ? void 0 : _k.direccion;
-            orderObj.subtotal = (_l = order === null || order === void 0 ? void 0 : order.cobros) === null || _l === void 0 ? void 0 : _l.subtotal;
-            orderObj.envio = (_m = order === null || order === void 0 ? void 0 : order.costos) === null || _m === void 0 ? void 0 : _m.envio;
-            orderObj.total = (_o = order === null || order === void 0 ? void 0 : order.cobros) === null || _o === void 0 ? void 0 : _o.total;
-            orderObj.medioPago = (_p = order === null || order === void 0 ? void 0 : order.pago) === null || _p === void 0 ? void 0 : _p.tipo;
-            orderObj.infoAdic = (_r = (_q = order === null || order === void 0 ? void 0 : order.envio) === null || _q === void 0 ? void 0 : _q.info) === null || _r === void 0 ? void 0 : _r.infoAd;
-            orderObj.horario = (_t = (_s = order === null || order === void 0 ? void 0 : order.envio) === null || _s === void 0 ? void 0 : _s.info) === null || _t === void 0 ? void 0 : _t.horario;
+            orderObj.departamento = (_c = order === null || order === void 0 ? void 0 : order.envio) === null || _c === void 0 ? void 0 : _c.datos.departamento;
+            orderObj.ciudad = (_e = (_d = order === null || order === void 0 ? void 0 : order.envio) === null || _d === void 0 ? void 0 : _d.datos) === null || _e === void 0 ? void 0 : _e.ciudad;
+            orderObj.localidad = (_g = (_f = order === null || order === void 0 ? void 0 : order.envio) === null || _f === void 0 ? void 0 : _f.datos) === null || _g === void 0 ? void 0 : _g.localidad;
+            orderObj.barrio = (_j = (_h = order === null || order === void 0 ? void 0 : order.envio) === null || _h === void 0 ? void 0 : _h.datos) === null || _j === void 0 ? void 0 : _j.barrio;
+            orderObj.direccion = (_l = (_k = order === null || order === void 0 ? void 0 : order.envio) === null || _k === void 0 ? void 0 : _k.datos) === null || _l === void 0 ? void 0 : _l.direccion;
+            orderObj.subtotal = (_m = order === null || order === void 0 ? void 0 : order.cobros) === null || _m === void 0 ? void 0 : _m.subtotal;
+            orderObj.envio = (_o = order === null || order === void 0 ? void 0 : order.costos) === null || _o === void 0 ? void 0 : _o.envio;
+            orderObj.total = (_p = order === null || order === void 0 ? void 0 : order.cobros) === null || _p === void 0 ? void 0 : _p.total;
+            orderObj.medioPago = (_q = order === null || order === void 0 ? void 0 : order.pago) === null || _q === void 0 ? void 0 : _q.tipo;
+            orderObj.validated = (_s = (_r = order === null || order === void 0 ? void 0 : order.pago) === null || _r === void 0 ? void 0 : _r.comprobante) === null || _s === void 0 ? void 0 : _s.validated;
+            orderObj.infoAdic = (_u = (_t = order === null || order === void 0 ? void 0 : order.envio) === null || _t === void 0 ? void 0 : _t.info) === null || _u === void 0 ? void 0 : _u.infoAd;
+            orderObj.horario = (_w = (_v = order === null || order === void 0 ? void 0 : order.envio) === null || _v === void 0 ? void 0 : _v.info) === null || _w === void 0 ? void 0 : _w.horario;
             arrEntregas.push(orderObj);
         }
         res.status(200).json(arrEntregas);

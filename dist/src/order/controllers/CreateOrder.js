@@ -124,10 +124,12 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
             let exportInvoice = yield (0, saveImageToCloudinary_1.saveImageToCloudinary)(imageFile, "pos/order/invoice/", idInvoice);
             createOrder.pago.comprobante.url = exportInvoice.url;
             createOrder.pago.comprobante.asset_id = exportInvoice.asset_id;
+            createOrder.pago.comprobante.validated = false;
         }
         else {
             createOrder.pago.comprobante.url = null;
             createOrder.pago.comprobante.asset_id = null;
+            createOrder.pago.comprobante.validated = null;
         }
         // Timestamp
         createOrder.created_at = new Date(Date.now());
