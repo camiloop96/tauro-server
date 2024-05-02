@@ -66,6 +66,7 @@ export interface OrderQuery {
   horario?: string | null;
   medioPago?: string;
   comprobante?: string;
+  validated?: boolean | null;
 }
 
 export interface IQueryOrderDetail {

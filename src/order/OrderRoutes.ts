@@ -4,6 +4,7 @@ import { CreateOrderController } from "./controllers/CreateOrder";
 import { DeleteOrderController } from "./controllers/DeleteOrder";
 import upload from "../../config/multerConfig";
 import { DetailOrderController } from "./controllers/OrderDetail";
+import { GetOrderInvoiceController } from "./controllers/OrderInvoice";
 /* import OrderController from "./controllers/order.js"; */
 
 const OrderRoutes = Router();
@@ -12,6 +13,7 @@ OrderRoutes.get("/list/by-date/:date", OrderList);
 OrderRoutes.post("/create/", upload.single('invoiceImage'),  CreateOrderController);
 OrderRoutes.post("/delete/", DeleteOrderController);
 OrderRoutes.get("/detail/:id", DetailOrderController)
+OrderRoutes.get("/invoice/get/:id", GetOrderInvoiceController)
 // OrderRoutes.get("/migrate/", MigrateOrders);
 /*Order.post("/report/", OrderController.report); */
 

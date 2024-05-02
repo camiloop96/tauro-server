@@ -27,8 +27,8 @@ export const OrderList = async (req: Request, res: Response) => {
       let orderObj: OrderQuery = {};
       let customerData = await CustomerModel.findOne({ _id: order.cliente });
       orderObj._id = order?._id;
-      orderObj.fechaEntrega = order?.envio?.fechaEntrega,
-      orderObj.guia = order?.envio?.guia;
+      (orderObj.fechaEntrega = order?.envio?.fechaEntrega),
+        (orderObj.guia = order?.envio?.guia);
       orderObj.nombres = customerData?.nombres;
       orderObj.celular = customerData?.celular;
       orderObj.cedula = customerData?.cedula;
@@ -41,8 +41,9 @@ export const OrderList = async (req: Request, res: Response) => {
       orderObj.envio = order?.costos?.envio;
       orderObj.total = order?.cobros?.total;
       orderObj.medioPago = order?.pago?.tipo;
-      orderObj.infoAdic = order?.envio?.info?.infoAd
-      orderObj.horario = order?.envio?.info?.horario
+      orderObj.validated = order?.pago?.comprobante?.validated;
+      orderObj.infoAdic = order?.envio?.info?.infoAd;
+      orderObj.horario = order?.envio?.info?.horario;
       arrEntregas.push(orderObj);
     }
 
