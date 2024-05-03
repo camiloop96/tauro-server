@@ -1,0 +1,16 @@
+name: CI/CD Pipeline
+
+on:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout 🚀"
+        uses: actions/checkout@v4
+      - name: "Setup node ⚒️"
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - name: "Install dependencies 🪜"
+        run: npm run install
+      - name: "Build typescript"
+        run: npm run build && find dist/src/server.js

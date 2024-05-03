@@ -2,9 +2,7 @@
 import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import AppRoutes from "./routes/routes";
-import { authenticateToken } from "./middlewares/authenticateToken";
 import cors from "cors";
-import multer from "multer";
 
 // Creación del servidor
 const app: Express = express();
