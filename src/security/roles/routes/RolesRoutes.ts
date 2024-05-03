@@ -11,7 +11,8 @@ import { GetUsersByRole } from "../controller/GetUserByRole";
 const RolesRoutes = Router();
 
 // Definición de las rutas
-RolesRoutes.post("/create", CreateRole);
+
+RolesRoutes.post("/create", CreateRole)
 RolesRoutes.get("/all", ListRoles);
 RolesRoutes.get("/detail/:id", DetailRole);
 RolesRoutes.put("/update/:id", UpdateRole);
