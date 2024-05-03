@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const CreateRole_1 = require("../controller/CreateRole");
 const ListRoles_1 = require("../controller/ListRoles");
 const DetailRole_1 = require("../controller/DetailRole");
 const UpdateRole_1 = require("../controller/UpdateRole");
@@ -10,7 +11,7 @@ const GetUserByRole_1 = require("../controller/GetUserByRole");
 // Creación del enrutador
 const RolesRoutes = (0, express_1.Router)();
 // Definición de las rutas
-// RolesRoutes.post("/create", CreateRole);
+RolesRoutes.post("/create", CreateRole_1.CreateRole);
 RolesRoutes.get("/all", ListRoles_1.ListRoles);
 RolesRoutes.get("/detail/:id", DetailRole_1.DetailRole);
 RolesRoutes.put("/update/:id", UpdateRole_1.UpdateRole);
