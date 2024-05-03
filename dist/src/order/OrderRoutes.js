@@ -10,10 +10,11 @@ const DeleteOrder_1 = require("./controllers/DeleteOrder");
 const multerConfig_1 = __importDefault(require("../../config/multerConfig"));
 const OrderDetail_1 = require("./controllers/OrderDetail");
 const OrderInvoice_1 = require("./controllers/OrderInvoice");
+const authorizeRoles_1 = __importDefault(require("../middlewares/authorizeRoles"));
 /* import OrderController from "./controllers/order.js"; */
 const OrderRoutes = (0, express_1.Router)();
-OrderRoutes.get("/list/by-date/:date", OrderList_1.OrderList);
-OrderRoutes.post("/create/", multerConfig_1.default.single('invoiceImage'), CreateOrder_1.CreateOrderController);
+OrderRoutes.get("/list/by-date/:date", (0, authorizeRoles_1.default)(["master", "admin", "seller"]), OrderList_1.OrderList);
+OrderRoutes.post("/create/", (0, authorizeRoles_1.default)(["master", "admin", "seller"]), multerConfig_1.default.single("invoiceImage"), CreateOrder_1.CreateOrderController);
 OrderRoutes.post("/delete/", DeleteOrder_1.DeleteOrderController);
 OrderRoutes.get("/detail/:id", OrderDetail_1.DetailOrderController);
 OrderRoutes.get("/invoice/get/:id", OrderInvoice_1.GetOrderInvoiceController);

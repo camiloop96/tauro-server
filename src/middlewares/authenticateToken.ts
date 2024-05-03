@@ -43,6 +43,7 @@ export const authenticateToken = async (
     // Extracción del rol del token
     let decodedToken = await decodeToken(tokenFormatted);
     req.role = decodedToken && decodedToken.role;
+    req.user = decodedToken && decodedToken.userId;
 
     next();
   } catch (error) {

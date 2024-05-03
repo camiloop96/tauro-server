@@ -16,7 +16,7 @@ const AppRoutes = (0, express_1.Router)();
 AppRoutes.use("/security/", SecurityRoutes_1.default);
 AppRoutes.use("/product/", authenticateToken_1.authenticateToken, routes_1.default);
 /* AppRoutes.use("/pos/order/", authenticateToken, OrderRoutes); */
-AppRoutes.use("/pos/order/", OrderRoutes_1.default);
+AppRoutes.use("/pos/order/", authenticateToken_1.authenticateToken, OrderRoutes_1.default);
 AppRoutes.use("/customer/", authenticateToken_1.authenticateToken, CustomerRoutes_1.default);
 AppRoutes.use("/shipping/", ShippingRoutes_1.default);
 exports.default = AppRoutes;

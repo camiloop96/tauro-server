@@ -20,9 +20,7 @@ const authenticateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     try {
         const token = req.header("Authorization");
         if (!token) {
-            return res
-                .status(401)
-                .json({ message: "Acceso denegado" });
+            return res.status(401).json({ message: "Acceso denegado" });
         }
         const tokenParts = token.split(" ");
         const tokenFormatted = tokenParts[1];
@@ -32,10 +30,12 @@ const authenticateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         // Validación de token
         let isValidToken = yield (0, tokenManager_1.verifyToken)(tokenFormatted);
         if (!isValidToken) {
-            return res
-                .status(403)
-                .json({ message: "Acceso denegado" });
+            return res.status(403).json({ message: "Acceso denegado" });
         }
+        // Extracción del rol del token
+        let decodedToken = yield (0, tokenManager_1.decodeToken)(tokenFormatted);
+        req.role = decodedToken && decodedToken.role;
+        req.user = decodedToken && decodedToken.userId;
         next();
     }
     catch (error) {

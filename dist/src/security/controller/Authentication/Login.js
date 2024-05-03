@@ -15,9 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginController = void 0;
 const CredentialModel_1 = __importDefault(require("../../models/CredentialModel"));
 const passwordManager_1 = require("../../utils/passwordManager");
-const UserModel_1 = __importDefault(require("../../models/UserModel"));
+const UserModel_1 = __importDefault(require("../../users/models/UserModel"));
 const tokenManager_1 = require("../../utils/tokenManager");
 const dateManager_1 = require("../../../utils/dateManager");
+const RolesModel_1 = __importDefault(require("../../roles/models/RolesModel"));
 const LoginController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`${(0, dateManager_1.getCurrentDate)()} ${req.method} simora/api/authentication/security/authentication/login/`);
     try {
@@ -53,11 +54,13 @@ const LoginController = (req, res) => __awaiter(void 0, void 0, void 0, function
         // Creacción del token
         let token;
         if (user !== null) {
-            let payload = { userId: user._id };
+            let payload = { userId: user._id, role: user === null || user === void 0 ? void 0 : user.role };
             token = (0, tokenManager_1.createToken)(payload);
         }
+        // Busqueda de nombre de rol
+        let existingRole = yield RolesModel_1.default.findById(user === null || user === void 0 ? void 0 : user.role);
         // Respuesta
-        res.status(200).json({ token });
+        res.status(200).json({ token, role: existingRole && (existingRole === null || existingRole === void 0 ? void 0 : existingRole.name) });
     }
     catch (error) {
         res.status(500).json({ error: error.message });
