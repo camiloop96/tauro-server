@@ -6,28 +6,25 @@ import { IAddressItem, ICustomer } from "../../customer/types/CustomerTypes";
 import ProductModel from "../../products/models/ProductModel";
 import { generateUniqueGuideNumber } from "../guide/controller/guide";
 import { IProductItem } from "../../products/types/ProductTypes";
-import { v2 as cloudinary } from "cloudinary";
-import { cloudinaryConfig } from "../../../config/cloudinaryConfig";
 import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
+import OrderBySellerModel from "../models/OrderBySeller";
 
 export const CreateOrderController = async (req: Request, res: Response) => {
   try {
     // Desestructuracion de orden
     let { orderData } = req.body;
     let orderDecoded = JSON.parse(orderData);
-    let { factura } = orderDecoded;
+    let { factura, vendedor } = orderDecoded;
     let { cliente, pedido, envio, pago, costos } = factura || {};
 
+    // Comprobacion de nulidad
     if (!factura) {
       return res.status(400).json({
         error: "El formato de factura tiene error o no existe",
       });
     }
-
     // Desestructuración de cliente
-
     let { nombres } = cliente || {};
-
     // Comprobacion de nulidad de cliente
     // Validacion del cliente
     if (!cliente && !nombres && !cliente.celular && !cliente.cedula) {
@@ -35,7 +32,6 @@ export const CreateOrderController = async (req: Request, res: Response) => {
         error: "Faltan datos del cliente o están incompletos",
       });
     }
-
     if (
       !envio.datos.direccion &&
       !envio.datos.barrio &&
@@ -50,15 +46,11 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     let existingCustomer = await CustomerModel.findOne({
       celular: cliente.celular,
     });
-
     // Desestructuracion de datos de envio
     let { datos } = envio || {};
-
     let datosEnvio: IAddressItem = datos;
     let direccion = datosEnvio.direccion;
-
     let createOrder = new OrderModel();
-
     let newCustomer;
     if (existingCustomer) {
       createOrder.cliente = existingCustomer._id;
@@ -82,12 +74,9 @@ export const CreateOrderController = async (req: Request, res: Response) => {
           barrio: datosEnvio.barrio,
           direccion: datosEnvio.direccion,
         };
-
         let newAddressItem = new AddressItemModel(envioData);
-
         await newAddressItem.save();
         existingCustomer.addressList.push(newAddressItem);
-
         await existingCustomer.save();
         createOrder.envio.datos = newAddressItem;
       }
@@ -99,9 +88,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
         barrio: datosEnvio.barrio,
         direccion: datosEnvio.direccion,
       };
-
       let newAddressItem = await AddressItemModel.create(envioData);
-
       let newCustomerData: ICustomer = {
         nombres: cliente.nombres,
         cedula: cliente.cedula,
@@ -113,21 +100,16 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       createOrder.cliente = newCustomer._id;
       createOrder.envio.datos = newAddressItem;
     }
-
     if (envio.datos) {
       createOrder.envio.info = envio.info;
       createOrder.envio.fechaEntrega = envio.fechaEntrega;
     }
-
     // Costos
     createOrder.costos = costos;
-
     // Pago
     createOrder.pago.tipo = pago.tipo;
-
     // Comprobante
     let imageFile = req.file;
-
     if (imageFile && pago.tipo === "Anticipado") {
       let idInvoice = createOrder._id.toString();
       let exportInvoice = await saveImageToCloudinary(
@@ -143,10 +125,8 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       createOrder.pago.comprobante.asset_id = null;
       createOrder.pago.comprobante.validated = null;
     }
-
     // Timestamp
     createOrder.created_at = new Date(Date.now());
-
     // Productos
     let productos = pedido.productos;
     let arr = [];
@@ -164,10 +144,8 @@ export const CreateOrderController = async (req: Request, res: Response) => {
         arr.push(productoItem);
       }
     }
-
     // Ingresar productos al envio
     createOrder.pedido.productos = arr;
-
     let orderGuide = await generateUniqueGuideNumber();
     createOrder.envio.guia = orderGuide;
     // Cobros
@@ -175,7 +153,6 @@ export const CreateOrderController = async (req: Request, res: Response) => {
       let total = 0;
       let subtotal = 0;
       let cantProductos = 0;
-
       // Suma de los totales de los productos
       const totalProductos: any = productos.reduce((acc, producto) => {
         if (producto.total !== undefined) {
@@ -183,7 +160,6 @@ export const CreateOrderController = async (req: Request, res: Response) => {
         }
         return acc;
       }, 0);
-
       // Suma de los totales de los productos
       const cantidadProductos: any = productos.reduce((acc, producto) => {
         if (producto.total !== undefined) {
@@ -191,27 +167,29 @@ export const CreateOrderController = async (req: Request, res: Response) => {
         }
         return acc;
       }, 0);
-
       let iva = totalProductos * 0.19;
       total = totalProductos + envio;
       subtotal = totalProductos;
       cantProductos = cantidadProductos;
-
       return { subtotal, iva, total, cantProductos };
     };
-
     let { subtotal, iva, total, cantProductos } = getTotalPriceOrder(
       createOrder?.pedido?.productos,
       createOrder?.costos?.envio || 0
     );
-
     createOrder.cobros.cantProductos = cantProductos;
     createOrder.cobros.subtotal = subtotal;
     createOrder.cobros.IVA = iva;
     createOrder.cobros.total = total;
 
-    await createOrder.save();
+    // Guardado del pedido al vendedor
+    let saveOrderAtSeller = new OrderBySellerModel({
+      userId: vendedor,
+      orderId: createOrder._id,
+    });
 
+    await saveOrderAtSeller.save();
+    await createOrder.save();
     res.status(200).json({
       message: "Pedido agendado con éxito",
     });

@@ -1,7 +1,6 @@
-import { Types } from "mongoose";
+import { Document, Types } from "mongoose";
 import {
   IAddressItem,
-  ICustomer,
   ICustomerId,
 } from "../../customer/types/CustomerTypes";
 import { IProductItem } from "../../products/types/ProductTypes";
@@ -77,3 +76,9 @@ export interface IQueryOrderDetail {
   total: number;
   product: any;
 }
+
+export interface IUserByOrder extends Document {
+  userId: Types.ObjectId;
+  orderId: Types.ObjectId;
+}
+

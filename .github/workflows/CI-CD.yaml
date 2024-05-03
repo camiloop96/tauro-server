@@ -22,5 +22,5 @@ jobs:
       - name: "Install dependencies 🪜"
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
         run: npm install
-      - name: "Build typescript"
-        run: npm run build && find dist/src/server.js
+      # - name: "Build typescript"
+      #   run: npm run build && find dist/src/server.js

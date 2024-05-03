@@ -3,18 +3,19 @@ import { getCurrentDate } from "../../utils/dateManager";
 import OrderModel from "../models/OrderModel";
 import GuideModel from "../guide/models/guide";
 import { deleteImagefromCloudinary } from "../../utils/saveImageToCloudinary";
+import OrderBySellerModel from "../models/OrderBySeller";
 
 export const DeleteOrderController = async (req: Request, res: Response) => {
   console.log(`${getCurrentDate()} POST api/order/delete/`);
-  let data = req.body;
+  let { idList, idSeller } = req.body;
 
   try {
-    if (!data) {
+    if (!idList) {
       return res.status(400).json({
         error: "Selecciona al menos un pedido para eliminar",
       });
     }
-    for (const orderItem of data) {
+    for (const orderItem of idList) {
       // Encuentra el order por su _id
       const order = await OrderModel.findById(orderItem);
 
@@ -39,6 +40,9 @@ export const DeleteOrderController = async (req: Request, res: Response) => {
       //Elimina el numero de guia
       let orderGuide = order.envio.guia;
       await GuideModel.findOneAndDelete({ number: orderGuide });
+
+      // Eliminar pedido de la lista de pedidos por usuario
+      await OrderBySellerModel.findOneAndDelete({ orderId: orderItem });
 
       // Elimina el order principal
       await OrderModel.findByIdAndDelete(orderItem);
