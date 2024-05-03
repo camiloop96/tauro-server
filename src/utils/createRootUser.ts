@@ -1,19 +1,42 @@
 import CredentialsModel from "../security/models/CredentialModel";
-import UserModel, { IUser } from "../security/models/UserModel";
+import RoleModel from "../security/roles/models/RolesModel";
+import UserModel from "../security/users/models/UserModel";
 import { generateHashPassword } from "../security/utils/passwordManager";
 
 export const createRootUser = async () => {
   let usernameMaster = "master@simora.co";
   let passwordMaster = "Empanada04$";
+  let rolMaster = "master";
   let hashPassword = await generateHashPassword(passwordMaster);
+
   try {
+    let existingRole = await RoleModel.exists({
+      name: rolMaster,
+    });
+
+    let idRole;
+    if (!existingRole) {
+      idRole = new RoleModel({
+        name: rolMaster,
+      });
+      idRole.save();
+      console.log("Master role created succesfully");
+    } else {
+      console.log("Master role is now existing");
+      idRole = await RoleModel.findOne({
+        name: rolMaster,
+      });
+    }
     const existMaster = await CredentialsModel.exists({
       username: usernameMaster,
     });
+
     if (!existMaster) {
       const masterUser = new UserModel({
         fullName: "Master",
+        role: idRole && idRole._id,
       });
+
       if (masterUser) {
         const masterCredential = new CredentialsModel({
           username: usernameMaster,

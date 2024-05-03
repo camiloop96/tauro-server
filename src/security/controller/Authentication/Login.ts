@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import CredentialsModel from "../../models/CredentialModel";
 import { compareHashPassword } from "../../utils/passwordManager";
-import UserModel from "../../models/UserModel";
+import UserModel from "../../users/models/UserModel";
 import { createToken } from "../../utils/tokenManager";
 import { getCurrentDate } from "../../../utils/dateManager";
+import RoleModel from "../../roles/models/RolesModel";
 
 export const LoginController = async (req: Request, res: Response) => {
   console.log(
@@ -54,12 +55,15 @@ export const LoginController = async (req: Request, res: Response) => {
     // Creacción del token
     let token;
     if (user !== null) {
-      let payload = { userId: user._id };
+      let payload = { userId: user._id, role: user?.role };
       token = createToken(payload);
     }
 
+    // Busqueda de nombre de rol
+    let existingRole = await RoleModel.findById(user?.role);
+
     // Respuesta
-    res.status(200).json({ token });
+    res.status(200).json({ token, role: existingRole && existingRole?.name });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

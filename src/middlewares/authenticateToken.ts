@@ -21,9 +21,7 @@ export const authenticateToken = async (
     const token = req.header("Authorization");
 
     if (!token) {
-      return res
-        .status(401)
-        .json({ message: "Acceso denegado" });
+      return res.status(401).json({ message: "Acceso denegado" });
     }
 
     const tokenParts = token.split(" ");
@@ -39,10 +37,12 @@ export const authenticateToken = async (
     let isValidToken: boolean = await verifyToken(tokenFormatted);
 
     if (!isValidToken) {
-      return res
-        .status(403)
-        .json({ message: "Acceso denegado" });
+      return res.status(403).json({ message: "Acceso denegado" });
     }
+
+    // Extracción del rol del token
+    let decodedToken = await decodeToken(tokenFormatted);
+    req.role = decodedToken && decodedToken.role;
 
     next();
   } catch (error) {
