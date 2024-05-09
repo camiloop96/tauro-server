@@ -26,15 +26,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.io = void 0;
 const dotenv = __importStar(require("dotenv"));
 const dbConfig_1 = __importDefault(require("../config/dbConfig"));
 const app_1 = __importDefault(require("./app"));
+const socketConfig_1 = require("../config/socketConfig");
 // Import de variables de entorno
 dotenv.config();
 const PORT = parseInt(process.env.PORT || "5001");
 const MODE = process.env.MODE;
+// Escuchar el servidor en el puerto especificado
+let server = app_1.default.listen(PORT, () => {
+    console.log(`Simora app running at port ${PORT}`);
+});
 // Manejar errores de servidor
-app_1.default.on("error", (error) => {
+server.on("error", (error) => {
     if (error.syscall !== "listen") {
         throw error;
     }
@@ -53,10 +59,6 @@ app_1.default.on("error", (error) => {
             throw error;
     }
 });
-// Escuchar el servidor en el puerto especificado
-app_1.default.listen(PORT, () => {
-    console.log(`Simora app running at port ${PORT}`);
-});
 // Conexión a base de datos
 if (MODE === "deploy" || MODE === "development") {
     (0, dbConfig_1.default)(MODE);
@@ -64,3 +66,4 @@ if (MODE === "deploy" || MODE === "development") {
 else {
     console.error("Modo de conexión no válido");
 }
+exports.io = (0, socketConfig_1.createSocketServer)(server);

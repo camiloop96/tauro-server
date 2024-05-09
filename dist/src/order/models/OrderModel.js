@@ -106,8 +106,12 @@ const orderSchema = new mongoose_1.Schema({
             },
             validated: {
                 type: Boolean,
-                default: null
-            }
+                default: null,
+            },
+            cus: {
+                type: String,
+                default: null,
+            },
         },
     },
     costos: {

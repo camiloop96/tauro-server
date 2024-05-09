@@ -59,6 +59,8 @@ const LoginController = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         // Busqueda de nombre de rol
         let existingRole = yield RolesModel_1.default.findById(user === null || user === void 0 ? void 0 : user.role);
+        // Username
+        let userName = yield UserModel_1.default.findById(user._id);
         // Respuesta
         res.status(200).json({ token, role: existingRole && (existingRole === null || existingRole === void 0 ? void 0 : existingRole.name) });
     }
