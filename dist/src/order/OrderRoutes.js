@@ -22,6 +22,4 @@ OrderRoutes.get("/detail/:id", OrderDetail_1.DetailOrderController);
 OrderRoutes.get("/invoice/get/:id", OrderInvoice_1.GetOrderInvoiceController);
 OrderRoutes.post("/invoice/update/validate/:id", ValidateInvoiceOrder_1.ValidateInvoiceOrder);
 OrderRoutes.get("/update/model/cus/", UpdateCusModel_1.UpdateCusProperty);
-// OrderRoutes.get("/migrate/", MigrateOrders);
-/*Order.post("/report/", OrderController.report); */
 exports.default = OrderRoutes;
