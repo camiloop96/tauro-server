@@ -2,14 +2,20 @@ import express, { Express } from "express";
 import * as dotenv from "dotenv";
 import getConnection from "../config/dbConfig";
 import app from "./app";
+import { createSocketServer } from "../config/socketConfig";
 
 // Import de variables de entorno
 dotenv.config();
 const PORT: number = parseInt(process.env.PORT || "5001");
 const MODE: string | undefined = process.env.MODE;
 
+// Escuchar el servidor en el puerto especificado
+let server = app.listen(PORT, () => {
+  console.log(`Simora app running at port ${PORT}`);
+});
+
 // Manejar errores de servidor
-app.on("error", (error: any) => {
+server.on("error", (error: any) => {
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -31,14 +37,11 @@ app.on("error", (error: any) => {
   }
 });
 
-// Escuchar el servidor en el puerto especificado
-app.listen(PORT, () => {
-  console.log(`Simora app running at port ${PORT}`);
-});
-
 // Conexión a base de datos
 if (MODE === "deploy" || MODE === "development") {
   getConnection(MODE);
 } else {
   console.error("Modo de conexión no válido");
 }
+
+export const io = createSocketServer(server);

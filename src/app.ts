@@ -33,4 +33,6 @@ app.use((err: any, req: Request, res: Response, next: Function) => {
   res.status(500).json({ message: "Error interno del servidor" });
 });
 
+// Configuración de sockets
+
 export default app;

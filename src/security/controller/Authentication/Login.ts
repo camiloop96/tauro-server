@@ -5,6 +5,7 @@ import UserModel from "../../users/models/UserModel";
 import { createToken } from "../../utils/tokenManager";
 import { getCurrentDate } from "../../../utils/dateManager";
 import RoleModel from "../../roles/models/RolesModel";
+import { io } from "../../../server";
 
 export const LoginController = async (req: Request, res: Response) => {
   console.log(
@@ -61,6 +62,9 @@ export const LoginController = async (req: Request, res: Response) => {
 
     // Busqueda de nombre de rol
     let existingRole = await RoleModel.findById(user?.role);
+
+    // Username
+    let userName = await UserModel.findById(user._id);
 
     // Respuesta
     res.status(200).json({ token, role: existingRole && existingRole?.name });
