@@ -29,7 +29,4 @@ OrderRoutes.get("/invoice/get/:id", GetOrderInvoiceController);
 OrderRoutes.post("/invoice/update/validate/:id", ValidateInvoiceOrder);
 OrderRoutes.get("/update/model/cus/", UpdateCusProperty);
 
-// OrderRoutes.get("/migrate/", MigrateOrders);
-/*Order.post("/report/", OrderController.report); */
-
 export default OrderRoutes;
