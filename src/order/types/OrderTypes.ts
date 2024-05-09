@@ -1,8 +1,5 @@
 import { Document, Types } from "mongoose";
-import {
-  IAddressItem,
-  ICustomerId,
-} from "../../customer/types/CustomerTypes";
+import { IAddressItem, ICustomerId } from "../../customer/types/CustomerTypes";
 import { IProductItem } from "../../products/types/ProductTypes";
 
 export interface IEnvio {
@@ -21,6 +18,7 @@ export interface IPago {
     url: string | null;
     asset_id: string | null;
     validated: boolean | null;
+    cus: string;
   };
 }
 
@@ -81,4 +79,3 @@ export interface IUserByOrder extends Document {
   userId: Types.ObjectId;
   orderId: Types.ObjectId;
 }
-

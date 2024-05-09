@@ -6,6 +6,8 @@ import upload from "../../config/multerConfig";
 import { DetailOrderController } from "./controllers/OrderDetail";
 import { GetOrderInvoiceController } from "./controllers/OrderInvoice";
 import authorizeRoles from "../middlewares/authorizeRoles";
+import { UpdateCusProperty } from "./controllers/UpdateCusModel";
+import { ValidateInvoiceOrder } from "./controllers/ValidateInvoiceOrder";
 /* import OrderController from "./controllers/order.js"; */
 
 const OrderRoutes = Router();
@@ -24,6 +26,9 @@ OrderRoutes.post(
 OrderRoutes.post("/delete/", DeleteOrderController);
 OrderRoutes.get("/detail/:id", DetailOrderController);
 OrderRoutes.get("/invoice/get/:id", GetOrderInvoiceController);
+OrderRoutes.post("/invoice/update/validate/:id", ValidateInvoiceOrder);
+OrderRoutes.get("/update/model/cus/", UpdateCusProperty);
+
 // OrderRoutes.get("/migrate/", MigrateOrders);
 /*Order.post("/report/", OrderController.report); */
 

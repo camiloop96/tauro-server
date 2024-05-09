@@ -84,8 +84,12 @@ const orderSchema = new Schema<IOrden>({
       },
       validated: {
         type: Boolean,
-        default: null
-      }
+        default: null,
+      },
+      cus: {
+        type: String,
+        default: null,
+      },
     },
   },
   costos: {
