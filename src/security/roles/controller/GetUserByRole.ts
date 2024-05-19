@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser } from "../../users/types/IUser";
+import { IUser } from "../../users/types/UserTypes";
 import UserModel from "../../users/models/UserModel";
 
 export const GetUsersByRole = async (req: Request, res: Response) => {

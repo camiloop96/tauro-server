@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import RoleModel, { IRole } from "../models/RolesModel";
 import { JwtPayload } from "jsonwebtoken";
 import UserModel from "../../users/models/UserModel";
-import { IUser } from "../../users/types/IUser";
+import { IUser } from "../../users/types/UserTypes";
 import { decodeToken } from "../../utils/tokenManager";
 
 export const GetRoleFromToken = async (req: Request, res: Response) => {

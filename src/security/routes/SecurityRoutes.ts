@@ -15,7 +15,7 @@ SecurityRoutes.post("/authentication/logout/", LogoutController);
 SecurityRoutes.post("/authentication/token/verify/", VerifyTokenController);
 
 // User
-SecurityRoutes.use("/user/", authenticateToken, UserRoutes);
+SecurityRoutes.use("/user/", UserRoutes);
 
 // Roles
 SecurityRoutes.use("/roles/", RolesRoutes);

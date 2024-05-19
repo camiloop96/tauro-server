@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
-import { IUser } from "../types/IUser";
+import { IUser } from "../types/UserTypes";
 
 // Esquema de usuario
 const userSchema = new Schema<IUser>({
-  fullName: { type: String, required: true },
+  employee: { type: String, required: true },
   role: {
     type: Schema.Types.ObjectId,
     ref: "Role",

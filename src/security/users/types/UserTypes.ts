@@ -2,6 +2,6 @@ import { Document, Schema } from "mongoose";
 
 // Interface de Usuario
 export interface IUser extends Document {
-  fullName: string;
+  employee: string;
   role: Schema.Types.ObjectId;
 }
