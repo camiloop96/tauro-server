@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Login_1 = require("../controller/Authentication/Login");
 const Logout_1 = require("../controller/Authentication/Logout");
-const authenticateToken_1 = require("../../middlewares/authenticateToken");
 const VerifyToken_1 = require("../controller/Authentication/VerifyToken");
 const RolesRoutes_1 = __importDefault(require("../roles/routes/RolesRoutes"));
 const UserRoutes_1 = __importDefault(require("../users/UserRoutes"));
@@ -17,7 +16,7 @@ SecurityRoutes.post("/authentication/login/", Login_1.LoginController);
 SecurityRoutes.post("/authentication/logout/", Logout_1.LogoutController);
 SecurityRoutes.post("/authentication/token/verify/", VerifyToken_1.VerifyTokenController);
 // User
-SecurityRoutes.use("/user/", authenticateToken_1.authenticateToken, UserRoutes_1.default);
+SecurityRoutes.use("/user/", UserRoutes_1.default);
 // Roles
 SecurityRoutes.use("/roles/", RolesRoutes_1.default);
 exports.default = SecurityRoutes;

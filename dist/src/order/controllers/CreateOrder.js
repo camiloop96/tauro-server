@@ -34,6 +34,8 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 error: "El formato de factura tiene error o no existe",
             });
         }
+        // Pagos que necesitan comprobante
+        const requiredInvoices = ["Anticipado", "Contado", "Al Cobro"];
         // Desestructuración de cliente
         let { nombres } = cliente || {};
         // Comprobacion de nulidad de cliente
@@ -121,7 +123,7 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         createOrder.pago.tipo = pago.tipo;
         // Comprobante
         let imageFile = req.file;
-        if (imageFile && pago.tipo === "Anticipado") {
+        if (imageFile && requiredInvoices.includes(pago.tipo)) {
             let idInvoice = createOrder._id.toString();
             let exportInvoice = yield (0, saveImageToCloudinary_1.saveImageToCloudinary)(imageFile, "pos/order/invoice/", idInvoice);
             createOrder.pago.comprobante.url = exportInvoice.url;

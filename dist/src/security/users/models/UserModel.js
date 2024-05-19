@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 // Esquema de usuario
 const userSchema = new mongoose_1.Schema({
-    fullName: { type: String, required: true },
+    employee: { type: String, required: true },
     role: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Role",
