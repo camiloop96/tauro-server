@@ -42,7 +42,7 @@ export const DeleteOrderController = async (req: Request, res: Response) => {
       await GuideModel.findOneAndDelete({ number: orderGuide });
 
       // Eliminar pedido de la lista de pedidos por usuario
-      await OrderBySellerModel.findOneAndDelete({ orderId: orderItem });
+      await OrderBySellerModel.findOneAndDelete({ orderID: orderItem });
 
       // Elimina el order principal
       await OrderModel.findByIdAndDelete(orderItem);

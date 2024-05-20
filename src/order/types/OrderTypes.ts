@@ -76,6 +76,6 @@ export interface IQueryOrderDetail {
 }
 
 export interface IUserByOrder extends Document {
-  userId: Types.ObjectId;
-  orderId: Types.ObjectId;
+  sellerID: Types.ObjectId;
+  orderID: Types.ObjectId;
 }
