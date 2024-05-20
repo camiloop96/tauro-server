@@ -9,6 +9,7 @@ import { IProductItem } from "../../products/types/ProductTypes";
 import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
 import OrderBySellerModel from "../models/OrderBySeller";
 import { SellerModel } from "../../staff/Seller/models/SellerModel";
+import UserModel from "../../security/users/models/UserModel";
 
 export const CreateOrderController = async (req: Request, res: Response) => {
   try {
@@ -190,7 +191,11 @@ export const CreateOrderController = async (req: Request, res: Response) => {
 
     // Guardado del pedido al vendedor
 
-    let findSeller = await SellerModel.findById(vendedor);
+    let findUser = await UserModel.findById(vendedor);
+
+    let findSeller = await SellerModel.findOne({
+      employee: findUser?.employee,
+    });
 
     if (!findSeller) {
       return res.status(400).json({
