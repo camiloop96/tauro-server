@@ -3,7 +3,7 @@ import { IUser } from "../types/UserTypes";
 
 // Esquema de usuario
 const userSchema = new Schema<IUser>({
-  employee: { type: String, required: true },
+  employee: { type: Schema.ObjectId, required: true },
   role: {
     type: Schema.Types.ObjectId,
     ref: "Role",

@@ -14,7 +14,7 @@ const AppRoutes = Router();
 // Rutas
 AppRoutes.use("/security/", SecurityRoutes);
 AppRoutes.use("/product/", authenticateToken, ProductRoutes);
-AppRoutes.use("/pos/order/", authenticateToken, OrderRoutes);
+AppRoutes.use("/pos/order/", OrderRoutes);
 AppRoutes.use("/customer/", authenticateToken, CustomerRoutes);
 AppRoutes.use("/shipping/", ShippingRoutes);
 AppRoutes.use("/store/", StoreRoutes);

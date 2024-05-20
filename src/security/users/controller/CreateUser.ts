@@ -6,10 +6,10 @@ import RoleModel from "../../roles/models/RolesModel";
 
 export const CreateUser = async (req: Request, res: Response) => {
   try {
-    const { fullName, username, password, role } = req.body;
+    const { employee, username, password, role } = req.body;
 
     // Verificar si se proporcionó la contraseña
-    if (!fullName) {
+    if (!employee) {
       return res.status(400).json({
         message: "El nombre es obligatorio",
       });
@@ -55,7 +55,7 @@ export const CreateUser = async (req: Request, res: Response) => {
     const hashedPassword = await generateHashPassword(password);
 
     // Crear el usuario
-    const user = new UserModel({ fullName, role: existingRole._id });
+    const user = new UserModel({ employee, role: existingRole._id });
     const newUser = await user.save();
 
     // Crear las credenciales con la contraseña cifrada

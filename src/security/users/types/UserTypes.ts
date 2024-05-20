@@ -1,7 +1,7 @@
-import { Document, Schema } from "mongoose";
+import { Document, Schema, Types } from "mongoose";
 
 // Interface de Usuario
 export interface IUser extends Document {
-  employee: string;
+  employee: Types.ObjectId;
   role: Schema.Types.ObjectId;
 }
