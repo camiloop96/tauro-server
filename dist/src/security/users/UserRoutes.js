@@ -7,7 +7,6 @@ const UpdateUser_1 = require("./controller/UpdateUser");
 const ListUser_1 = require("./controller/ListUser");
 const DetailUser_1 = require("./controller/DetailUser");
 const GetUserData_1 = require("./controller/GetUserData");
-const UpdateFullNameToEmployee_1 = require("./migrations/UpdateFullNameToEmployee");
 const UserRoutes = (0, express_1.Router)();
 UserRoutes.post("/create/", CreateUser_1.CreateUser);
 UserRoutes.delete("/delete/:id/", DeleteUser_1.DeleteUserById);
@@ -15,6 +14,4 @@ UserRoutes.put("/edit/:id", UpdateUser_1.UpdateUser);
 UserRoutes.get("/all/", ListUser_1.ListUser);
 UserRoutes.get("/detail/:id/", DetailUser_1.DetailUser);
 UserRoutes.post("/data/by-token", GetUserData_1.GetUserData);
-// Migrations
-UserRoutes.get("/migrations/fullname", UpdateFullNameToEmployee_1.updateFullNameToEmployee);
 exports.default = UserRoutes;

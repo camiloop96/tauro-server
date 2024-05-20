@@ -20,6 +20,7 @@ const ProductModel_1 = __importDefault(require("../../products/models/ProductMod
 const guide_1 = require("../guide/controller/guide");
 const saveImageToCloudinary_1 = require("../../utils/saveImageToCloudinary");
 const OrderBySeller_1 = __importDefault(require("../models/OrderBySeller"));
+const SellerModel_1 = require("../../staff/Seller/models/SellerModel");
 const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
@@ -189,9 +190,20 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         createOrder.cobros.IVA = iva;
         createOrder.cobros.total = total;
         // Guardado del pedido al vendedor
+        let findSeller = yield SellerModel_1.SellerModel.findById(vendedor);
+        if (!findSeller) {
+            return res.status(400).json({
+                error: "No se encontro vendedor asociado",
+            });
+        }
+        if (!findSeller.active) {
+            return res.status(400).json({
+                error: "El vendedor se encuentra inactivo",
+            });
+        }
         let saveOrderAtSeller = new OrderBySeller_1.default({
-            userId: vendedor,
-            orderId: createOrder._id,
+            sellerID: findSeller._id,
+            orderID: createOrder._id,
         });
         yield saveOrderAtSeller.save();
         yield createOrder.save();

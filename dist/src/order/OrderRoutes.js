@@ -13,8 +13,6 @@ const OrderInvoice_1 = require("./controllers/OrderInvoice");
 const authorizeRoles_1 = __importDefault(require("../middlewares/authorizeRoles"));
 const UpdateCusModel_1 = require("./controllers/UpdateCusModel");
 const ValidateInvoiceOrder_1 = require("./controllers/ValidateInvoiceOrder");
-const UpdateuserIdToSellerId_1 = require("./migrations/UpdateuserIdToSellerId");
-/* import OrderController from "./controllers/order.js"; */
 const OrderRoutes = (0, express_1.Router)();
 OrderRoutes.get("/list/by-date/:date", (0, authorizeRoles_1.default)(["master", "admin", "seller"]), OrderList_1.OrderList);
 OrderRoutes.post("/create/", (0, authorizeRoles_1.default)(["master", "admin", "seller"]), multerConfig_1.default.single("invoiceImage"), CreateOrder_1.CreateOrderController);
@@ -23,5 +21,4 @@ OrderRoutes.get("/detail/:id", OrderDetail_1.DetailOrderController);
 OrderRoutes.get("/invoice/get/:id", OrderInvoice_1.GetOrderInvoiceController);
 OrderRoutes.post("/invoice/update/validate/:id", ValidateInvoiceOrder_1.ValidateInvoiceOrder);
 OrderRoutes.get("/update/model/cus/", UpdateCusModel_1.UpdateCusProperty);
-OrderRoutes.get("/migrations/updatenames", UpdateuserIdToSellerId_1.updateUserIdToSeller);
 exports.default = OrderRoutes;
