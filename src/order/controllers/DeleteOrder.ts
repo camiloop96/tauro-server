@@ -37,7 +37,7 @@ export const DeleteOrderController = async (req: Request, res: Response) => {
         }
       }
 
-      //Elimina el numero de guia
+      //Elimina el numero de guiagit cvhe
       let orderGuide = order.envio.guia;
       await GuideModel.findOneAndDelete({ number: orderGuide });
 
