@@ -26,8 +26,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 // Definición del esquema de la colección
 const orderBySellerSchema = new mongoose_1.Schema({
-    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
-    orderId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Order", required: true },
+    sellerID: { type: mongoose_1.Schema.Types.ObjectId, ref: "Seller", required: true },
+    orderID: { type: mongoose_1.Schema.Types.ObjectId, ref: "Order", required: true },
 });
 // Creación del modelo
 const OrderBySellerModel = mongoose_1.default.model("OrderBySeller", orderBySellerSchema);

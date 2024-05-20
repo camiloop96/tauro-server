@@ -17,9 +17,9 @@ const AppRoutes = (0, express_1.Router)();
 // Rutas
 AppRoutes.use("/security/", SecurityRoutes_1.default);
 AppRoutes.use("/product/", authenticateToken_1.authenticateToken, routes_1.default);
-AppRoutes.use("/pos/order/", OrderRoutes_1.default);
+AppRoutes.use("/pos/order/", authenticateToken_1.authenticateToken, OrderRoutes_1.default);
 AppRoutes.use("/customer/", authenticateToken_1.authenticateToken, CustomerRoutes_1.default);
-AppRoutes.use("/shipping/", ShippingRoutes_1.default);
-AppRoutes.use("/store/", StoreRoutes_1.default);
-AppRoutes.use("/staff/", StaffRoutesRoutes_1.default);
+AppRoutes.use("/shipping/", authenticateToken_1.authenticateToken, ShippingRoutes_1.default);
+AppRoutes.use("/store/", authenticateToken_1.authenticateToken, StoreRoutes_1.default);
+AppRoutes.use("/staff/", authenticateToken_1.authenticateToken, StaffRoutesRoutes_1.default);
 exports.default = AppRoutes;

@@ -48,7 +48,7 @@ const DeleteOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
             let orderGuide = order.envio.guia;
             yield guide_1.default.findOneAndDelete({ number: orderGuide });
             // Eliminar pedido de la lista de pedidos por usuario
-            yield OrderBySeller_1.default.findOneAndDelete({ orderId: orderItem });
+            yield OrderBySeller_1.default.findOneAndDelete({ orderID: orderItem });
             // Elimina el order principal
             yield OrderModel_1.default.findByIdAndDelete(orderItem);
         }

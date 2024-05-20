@@ -21,6 +21,7 @@ const guide_1 = require("../guide/controller/guide");
 const saveImageToCloudinary_1 = require("../../utils/saveImageToCloudinary");
 const OrderBySeller_1 = __importDefault(require("../models/OrderBySeller"));
 const SellerModel_1 = require("../../staff/Seller/models/SellerModel");
+const UserModel_1 = __importDefault(require("../../security/users/models/UserModel"));
 const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
@@ -190,7 +191,10 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         createOrder.cobros.IVA = iva;
         createOrder.cobros.total = total;
         // Guardado del pedido al vendedor
-        let findSeller = yield SellerModel_1.SellerModel.findById(vendedor);
+        let findUser = yield UserModel_1.default.findById(vendedor);
+        let findSeller = yield SellerModel_1.SellerModel.findOne({
+            employee: findUser === null || findUser === void 0 ? void 0 : findUser.employee,
+        });
         if (!findSeller) {
             return res.status(400).json({
                 error: "No se encontro vendedor asociado",
