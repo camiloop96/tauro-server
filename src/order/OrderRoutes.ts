@@ -8,8 +8,6 @@ import { GetOrderInvoiceController } from "./controllers/OrderInvoice";
 import authorizeRoles from "../middlewares/authorizeRoles";
 import { UpdateCusProperty } from "./controllers/UpdateCusModel";
 import { ValidateInvoiceOrder } from "./controllers/ValidateInvoiceOrder";
-import { updateUserIdToSeller } from "./migrations/UpdateuserIdToSellerId";
-/* import OrderController from "./controllers/order.js"; */
 
 const OrderRoutes = Router();
 
@@ -30,5 +28,4 @@ OrderRoutes.get("/invoice/get/:id", GetOrderInvoiceController);
 OrderRoutes.post("/invoice/update/validate/:id", ValidateInvoiceOrder);
 OrderRoutes.get("/update/model/cus/", UpdateCusProperty);
 
-OrderRoutes.get("/migrations/updatenames", updateUserIdToSeller);
 export default OrderRoutes;

@@ -8,6 +8,7 @@ import { generateUniqueGuideNumber } from "../guide/controller/guide";
 import { IProductItem } from "../../products/types/ProductTypes";
 import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
 import OrderBySellerModel from "../models/OrderBySeller";
+import { SellerModel } from "../../staff/Seller/models/SellerModel";
 
 export const CreateOrderController = async (req: Request, res: Response) => {
   try {
@@ -188,9 +189,24 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     createOrder.cobros.total = total;
 
     // Guardado del pedido al vendedor
+
+    let findSeller = await SellerModel.findById(vendedor);
+
+    if (!findSeller) {
+      return res.status(400).json({
+        error: "No se encontro vendedor asociado",
+      });
+    }
+
+    if (!findSeller.active) {
+      return res.status(400).json({
+        error: "El vendedor se encuentra inactivo",
+      });
+    }
+
     let saveOrderAtSeller = new OrderBySellerModel({
-      userId: vendedor,
-      orderId: createOrder._id,
+      sellerID: findSeller._id,
+      orderID: createOrder._id,
     });
 
     await saveOrderAtSeller.save();
