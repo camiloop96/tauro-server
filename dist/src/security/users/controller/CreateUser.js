@@ -19,9 +19,9 @@ const passwordManager_1 = require("../../utils/passwordManager");
 const RolesModel_1 = __importDefault(require("../../roles/models/RolesModel"));
 const CreateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { fullName, username, password, role } = req.body;
+        const { employee, username, password, role } = req.body;
         // Verificar si se proporcionó la contraseña
-        if (!fullName) {
+        if (!employee) {
             return res.status(400).json({
                 message: "El nombre es obligatorio",
             });
@@ -62,7 +62,7 @@ const CreateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         // Cifrar la contraseña con bcrypt
         const hashedPassword = yield (0, passwordManager_1.generateHashPassword)(password);
         // Crear el usuario
-        const user = new UserModel_1.default({ fullName, role: existingRole._id });
+        const user = new UserModel_1.default({ employee, role: existingRole._id });
         const newUser = yield user.save();
         // Crear las credenciales con la contraseña cifrada
         const credentials = new CredentialModel_1.default({
