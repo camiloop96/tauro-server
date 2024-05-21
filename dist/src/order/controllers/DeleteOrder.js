@@ -44,7 +44,7 @@ const DeleteOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
                     });
                 }
             }
-            //Elimina el numero de guia
+            //Elimina el numero de guiagit cvhe
             let orderGuide = order.envio.guia;
             yield guide_1.default.findOneAndDelete({ number: orderGuide });
             // Eliminar pedido de la lista de pedidos por usuario
