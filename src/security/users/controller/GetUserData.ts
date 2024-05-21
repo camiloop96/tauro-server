@@ -4,6 +4,8 @@ import UserModel from "../models/UserModel";
 import { getCurrentDate } from "../../../utils/dateManager";
 import { EmployeeModel } from "../../../staff/Employee/models/EmployeeModel";
 import { BranchStoreModel } from "../../../store/branch/models/BranchModel";
+import { SellerModel } from "../../../staff/Seller/models/SellerModel";
+import { IUserQueryData } from "../types/UserTypes";
 
 export const GetUserData = async (req: Request, res: Response) => {
   console.log(
@@ -26,23 +28,32 @@ export const GetUserData = async (req: Request, res: Response) => {
       });
     }
 
-    let findEmployee = await EmployeeModel.findById(user?.employee);
-
-    let userData;
-    if (findEmployee !== null) {
-      let findBranchStore = await BranchStoreModel.findById(
-        findEmployee?.branchStore
-      );
-
-      userData = {
-        _id: findEmployee?._id,
-        fullName: `${findEmployee?.name} ${findEmployee?.lastName}`,
-        cityBranchStore: {
-          name: findBranchStore?.name,
-          city: findBranchStore?.city,
-        },
-      };
+    // Validacion de empleado
+    let findEmployee: any = await EmployeeModel.findById(user?.employee);
+    if (!findEmployee) {
+      return res.status(400).json({
+        error: "No hay empleado asociado",
+      });
     }
+
+    // Busqueda de Vendedor y Sucursal
+    let findBranchStore = await BranchStoreModel.findById(
+      findEmployee?.branchStore
+    );
+    let findSeller = await SellerModel.findOne({
+      employee: findEmployee._id,
+    });
+
+    let userData: IUserQueryData = {
+      _id: findEmployee?._id,
+      fullName: `${findEmployee?.name} ${findEmployee?.lastName}`,
+      cityBranchStore: {
+        name: findBranchStore?.name,
+        city: findBranchStore?.city,
+      },
+      sellerID: findSeller ? findSeller?._id : null,
+    };
+
     return res.status(200).json(userData);
   } catch (error: any) {
     return res.status(500).json({

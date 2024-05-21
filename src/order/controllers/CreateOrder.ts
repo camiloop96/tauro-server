@@ -191,11 +191,7 @@ export const CreateOrderController = async (req: Request, res: Response) => {
 
     // Guardado del pedido al vendedor
 
-    let findUser = await UserModel.findById(vendedor);
-
-    let findSeller = await SellerModel.findOne({
-      employee: findUser?.employee,
-    });
+    let findSeller = await SellerModel.findById(vendedor);
 
     if (!findSeller) {
       return res.status(400).json({
