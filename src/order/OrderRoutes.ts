@@ -2,7 +2,7 @@ import { Router } from "express";
 import { OrderList } from "./controllers/OrderList";
 import { CreateOrderController } from "./controllers/CreateOrder";
 import { DeleteOrderController } from "./controllers/DeleteOrder";
-import upload from "../../config/multerConfig";
+import upload from "../config/multer";
 import { DetailOrderController } from "./controllers/OrderDetail";
 import { GetOrderInvoiceController } from "./controllers/OrderInvoice";
 import authorizeRoles from "../middlewares/authorizeRoles";

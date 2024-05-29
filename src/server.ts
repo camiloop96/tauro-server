@@ -1,17 +1,16 @@
-import express, { Express } from "express";
-import * as dotenv from "dotenv";
-import getConnection from "../config/dbConfig";
-import app from "./app";
-import { createSocketServer } from "../config/socketConfig";
+import { config } from "dotenv";
+import SocketServer from "@config/socketio";
+import { logError, logSuccess } from "@utils/LogHandle/logsMessages";
+import MongoDBConnection from "@infrastructure/database/MongoDBConnection";
+import { PORT, NODE_ENV } from "@config/env";
+import APP from "./app";
 
 // Import de variables de entorno
-dotenv.config();
-const PORT: number = parseInt(process.env.PORT || "5001");
-const MODE: string | undefined = process.env.MODE;
+config();
 
 // Escuchar el servidor en el puerto especificado
-let server = app.listen(PORT, () => {
-  console.log(`Simora app running at port ${PORT}`);
+let server = APP.listen(PORT, () => {
+  logSuccess(`Simora App running at port ${PORT} at ${NODE_ENV} environment`);
 });
 
 // Manejar errores de servidor
@@ -20,28 +19,34 @@ server.on("error", (error: any) => {
     throw error;
   }
 
-  const bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
+  const BIND = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
 
   // Manejar diferentes tipos de errores
   switch (error.code) {
     case "EACCES":
-      console.error(bind + " requires elevated privileges");
+      logError(`${BIND} requires elevated privileges`);
       process.exit(1);
-      break;
     case "EADDRINUSE":
-      console.error(bind + " is already in use");
-      process.exit(1);
+      logError(`${BIND} is already in use`);
       break;
     default:
       throw error;
   }
 });
 
-// Conexión a base de datos
-if (MODE === "deploy" || MODE === "development") {
-  getConnection(MODE);
-} else {
-  console.error("Modo de conexión no válido");
+// Connection to MongoDB database
+async function connectDB() {
+  try {
+    await MongoDBConnection.connect();
+  } catch (error) {
+    logError(`Connection error at database: ${error}`);
+  }
 }
 
-export const io = createSocketServer(server);
+// Call to connection at database
+connectDB();
+
+// Websocket config
+const socketServer = new SocketServer(server);
+export const IO = socketServer.getServer();
+logSuccess(`Socket server connected successfully at ${NODE_ENV} environment`);

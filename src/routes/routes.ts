@@ -7,17 +7,18 @@ import CustomerRoutes from "../customer/CustomerRoutes";
 import ShippingRoutes from "../shipping/ShippingRoutes";
 import StoreRoutes from "../store/StoreRoutes";
 import StaffRoutes from "../staff/StaffRoutesRoutes";
+import userRoutes from "@modules/security/infrastructure/routes/userRoutes";
 
-// Creacion del enrutador
-const AppRoutes = Router();
+// Router initialization
+const App_Routes = Router();
 
-// Rutas
-AppRoutes.use("/security/", SecurityRoutes);
-AppRoutes.use("/product/", authenticateToken, ProductRoutes);
-AppRoutes.use("/pos/order/", authenticateToken, OrderRoutes);
-AppRoutes.use("/customer/", authenticateToken, CustomerRoutes);
-AppRoutes.use("/shipping/", authenticateToken, ShippingRoutes);
-AppRoutes.use("/store/", authenticateToken, StoreRoutes);
-AppRoutes.use("/staff/", authenticateToken, StaffRoutes);
+// Routes
+App_Routes.use("/dashboard/security/", SecurityRoutes);
+// App_Routes.use("/product/", authenticateToken, ProductRoutes);
+// App_Routes.use("/pos/order/", authenticateToken, OrderRoutes);
+// App_Routes.use("/customer/", authenticateToken, CustomerRoutes);
+// App_Routes.use("/shipping/", authenticateToken, ShippingRoutes);
+// App_Routes.use("/store/", authenticateToken, StoreRoutes);
+// App_Routes.use("/staff/", authenticateToken, StaffRoutes);
 
-export default AppRoutes;
+export default App_Routes;

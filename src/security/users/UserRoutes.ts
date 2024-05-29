@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { CreateUser } from "./controller/CreateUser";
 import { DeleteUserById } from "./controller/DeleteUser";
 import { UpdateUser } from "./controller/UpdateUser";
 import { ListUser } from "./controller/ListUser";
@@ -8,7 +7,6 @@ import { GetUserData } from "./controller/GetUserData";
 
 const UserRoutes = Router();
 
-UserRoutes.post("/create/", CreateUser);
 UserRoutes.delete("/delete/:id/", DeleteUserById);
 UserRoutes.put("/edit/:id", UpdateUser);
 UserRoutes.get("/all/", ListUser);
