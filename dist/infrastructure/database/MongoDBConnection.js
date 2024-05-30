@@ -12,9 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const env_1 = require("@config/env");
-const rootUser_1 = require("@modules/security/shared/rootUser");
-const logsMessages_1 = require("@utils/LogHandle/logsMessages");
+const env_1 = require("../../config/env");
+const logsMessages_1 = require("../../utils/LogHandle/logsMessages");
 const mongoose_1 = __importDefault(require("mongoose"));
 class MongoDBConnection {
     connect() {
@@ -43,7 +42,7 @@ class MongoDBConnection {
                 // Intentar conectar a la base de datos utilizando Mongoose
                 yield mongoose_1.default.connect(connectionString, {});
                 (0, logsMessages_1.logSuccess)(`MongoDB established for ${env_1.NODE_ENV} environment`);
-                (0, rootUser_1.createRootUser)();
+                // createRootUser();
             }
             catch (err) {
                 (0, logsMessages_1.logError)(`Connection error at database: ${err}`);

@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ListUserController = void 0;
 const MongoUserRepository_1 = require("../../repositories/MongoUserRepository");
-const ListUserUseCase_1 = require("@modules/security/application/useCases/user/ListUserUseCase");
+const ListUserUseCase_1 = require("../../../../security/application/useCases/user/ListUserUseCase");
 class ListUserController {
     constructor() {
         this.listUserUseCase = new ListUserUseCase_1.ListUserUseCase(new MongoUserRepository_1.MongoUserRepository());
@@ -24,7 +24,7 @@ class ListUserController {
             }
             catch (error) {
                 console.error("Error creating user:", error);
-                res.status(500).send("Error creating user");
+                res.status(500).json({ message: "Error creating user" });
             }
         });
     }

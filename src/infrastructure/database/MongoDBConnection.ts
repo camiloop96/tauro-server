@@ -30,7 +30,7 @@ class MongoDBConnection {
       // Intentar conectar a la base de datos utilizando Mongoose
       await mongoose.connect(connectionString, {});
       logSuccess(`MongoDB established for ${NODE_ENV} environment`);
-      createRootUser();
+      // createRootUser();
     } catch (err) {
       logError(`Connection error at database: ${err}`);
     }

@@ -9,7 +9,7 @@ import { IProductItem } from "../../products/types/ProductTypes";
 // import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
 import OrderBySellerModel from "../models/OrderBySeller";
 import { SellerModel } from "../../staff/Seller/models/SellerModel";
-import UserModel from "../../security/users/models/UserModel";
+// import UserModel from "../../security/users/models/UserModel";
 
 export const CreateOrderController = async (req: Request, res: Response) => {
   try {

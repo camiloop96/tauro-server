@@ -1,5 +1,5 @@
 "use strict";
-// import { cloudinaryConfig } from "@config/cloudinary";
+// import { cloudinaryConfig } from "../config/cloudinary";
 // import { getCurrentDate } from "./dateManager";
 // export const saveImageToCloudinary = async (
 //   image: any,

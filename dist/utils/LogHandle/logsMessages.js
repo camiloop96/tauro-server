@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logSuccess = exports.logError = void 0;
-const dateManager_1 = require("@utils/dateManager");
+const dateManager_1 = require("../dateManager");
 /**
  * Log an error message with the current date.
  * @param {string} message - The error message to log.

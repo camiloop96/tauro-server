@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.compareHashPassword = exports.generateHashPassword = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const AppError_1 = require("@shared/errors/AppError");
+const AppError_1 = require("../../../shared/errors/AppError");
 // Configuration
 const saltRounds = 10;
 /**

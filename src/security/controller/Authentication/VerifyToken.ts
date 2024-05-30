@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { verifyToken } from "../../utils/tokenManager";
+import { verifyToken } from "../../../modules/security/shared/tokenManager";
 import { getCurrentDate } from "../../../utils/dateManager";
 
 export const VerifyTokenController = async (req: Request, res: Response) => {

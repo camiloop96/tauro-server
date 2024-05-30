@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { DotenvParseOutput, config } from "dotenv";
-import { decodeToken, verifyToken } from "../security/utils/tokenManager";
+import { decodeToken, verifyToken } from "../modules/security/shared/tokenManager";
 
 interface AuthenticatedRequest extends Request {
   user?: JwtPayload | string | undefined;

@@ -14,10 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IO = void 0;
 const dotenv_1 = require("dotenv");
-const socketio_1 = __importDefault(require("@config/socketio"));
-const logsMessages_1 = require("@utils/LogHandle/logsMessages");
-const MongoDBConnection_1 = __importDefault(require("@infrastructure/database/MongoDBConnection"));
-const env_1 = require("@config/env");
+const socketio_1 = __importDefault(require("./config/socketio"));
+const logsMessages_1 = require("./utils/LogHandle/logsMessages");
+const MongoDBConnection_1 = __importDefault(require("./infrastructure/database/MongoDBConnection"));
+const env_1 = require("./config/env");
 const app_1 = __importDefault(require("./app"));
 // Import de variables de entorno
 (0, dotenv_1.config)();

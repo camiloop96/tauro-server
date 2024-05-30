@@ -15,8 +15,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoCredentialRepository = void 0;
 const CredentialModel_1 = __importDefault(require("../models/CredentialModel"));
 const AppError_1 = require("src/shared/errors/AppError");
-const passwordManager_1 = require("@modules/security/shared/passwordManager");
+const passwordManager_1 = require("../../../security/shared/passwordManager");
 class MongoCredentialRepository {
+    getCredentialsByUsername(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const existCredential = yield CredentialModel_1.default.findOne({
+                    username: username,
+                });
+                if (!existCredential) {
+                    throw new AppError_1.AppError("Invalid credentials", 401);
+                }
+                return existCredential;
+            }
+            catch (error) {
+                throw new AppError_1.AppError("Error fetching credentials", 500);
+            }
+        });
+    }
     createCredential(credential) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

@@ -8,12 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserUseCase = void 0;
-const UserModel_1 = __importDefault(require("@modules/security/infrastructure/models/UserModel"));
 const AppError_1 = require("src/shared/errors/AppError");
 class CreateUserUseCase {
     constructor(userRepository, employeeRepository, roleRepository, credentialsRepository) {
@@ -28,22 +24,24 @@ class CreateUserUseCase {
                 // Existing user
                 const existingEmployee = yield this.employeeRepository.getEmployeeById(userData.employee);
                 // Existing user by employee id
-                yield this.userRepository.isExistEmployeeUser(existingEmployee);
+                const existEmployeeUser = yield this.userRepository.isExistEmployeeUser(existingEmployee);
+                if (existEmployeeUser) {
+                    throw new AppError_1.AppError("The employee already has an associated user", 400);
+                }
                 // ExistingRole
                 const existingRole = yield this.roleRepository.getRoleByName(userData.role);
                 // Creating credential
                 const createCredential = yield this.credentialsRepository.createCredential({
+                    _id: undefined,
                     username: userData.username,
                     password: userData.password,
                 });
                 // Creating user
-                const createUser = new UserModel_1.default({
+                yield this.userRepository.saveUser({
                     employee: userData.employee,
                     role: existingRole,
                     credential: createCredential,
                 });
-                // Saving user
-                yield createUser.save();
             }
             catch (error) {
                 throw new AppError_1.AppError("Error creating user", 500);

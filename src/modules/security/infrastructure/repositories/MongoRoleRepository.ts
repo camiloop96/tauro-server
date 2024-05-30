@@ -1,10 +1,46 @@
 import { Role } from "@modules/security/domain/entities/Role";
 import { IRoleRepository } from "@modules/security/domain/repositories/IRoleRepository";
-import { AppError } from "src/shared/errors/AppError";
 import RoleModel from "../models/RoleModel";
-import { Schema, Types, isValidObjectId } from "mongoose";
+import { Types, isValidObjectId } from "mongoose";
+import { AppError } from "@shared/errors/AppError";
 
 export class MongoRoleRepository implements IRoleRepository {
+  // Obtaining role by user ID
+  async getRoleByUserId(id: Types.ObjectId): Promise<string> {
+    try {
+      if (!id || !isValidObjectId(id)) {
+        throw new AppError("Missing or invalid ID", 400);
+      }
+      const findRole = await RoleModel.findById(id);
+      if (!findRole) {
+        throw new AppError("Role not found", 404);
+      }
+      return findRole.name;
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching roles", 500);
+      }
+    }
+  }
+  // Check and parse ID
+  async checkAndParseID(id: string): Promise<Types.ObjectId> {
+    try {
+      if (!id || !isValidObjectId(id)) {
+        throw new AppError("Missing or invalid ID", 400);
+      }
+      let parseID = new Types.ObjectId(id);
+      return parseID;
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error parsing ID", 500);
+      }
+    }
+  }
+  // Role existence
   async roleIsExist(id: Types.ObjectId): Promise<boolean> {
     try {
       if (!id || !isValidObjectId(id)) {
@@ -20,12 +56,26 @@ export class MongoRoleRepository implements IRoleRepository {
       throw new AppError("Error fetching role", 500);
     }
   }
-  getDetailRole(id: Types.ObjectId): Promise<Role> {
-    throw new Error("Method not implemented.");
+  // Detail role
+  async getDetailRole(id: Types.ObjectId): Promise<Role> {
+    try {
+      if (!id || !isValidObjectId(id)) {
+        throw new AppError("Missing or invalid ID", 400);
+      }
+      let role = await RoleModel.findById(id);
+      if (!role) {
+        throw new AppError("Role not found", 404);
+      }
+      return role;
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching role", 500);
+      }
+    }
   }
-  getRoleFromToken(token: string): Promise<Role> {
-    throw new Error("Method not implemented.");
-  }
+
   // Delete role
   async deleteRole(id: Types.ObjectId): Promise<void> {
     try {
@@ -34,24 +84,53 @@ export class MongoRoleRepository implements IRoleRepository {
       }
       await RoleModel.findByIdAndDelete(id);
     } catch (error) {
-      throw new AppError("Error fetching roles", 500);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching roles", 500);
+      }
     }
   }
   // Update Role
-  updateRole(id: Types.ObjectId): Promise<void> {
-    throw new Error("Method not implemented.");
+  async updateRole(id: Types.ObjectId, payload: Role): Promise<void> {
+    try {
+      if (!id || !isValidObjectId(id)) {
+        throw new AppError("Missing or invalid ID", 400);
+      }
+      if (Object.keys(payload).length === 0) {
+        throw new AppError("Role data cannot be empty", 400);
+      }
+
+      const updateRole = await RoleModel.findByIdAndUpdate(
+        id,
+        { $set: payload },
+        { new: true, runValidators: true }
+      );
+
+      if (!updateRole) {
+        throw new AppError("Role not found", 404);
+      }
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching Roles", 500);
+      }
+    }
   }
-  async getRoleByName(name: string): Promise<Types.ObjectId> {
+  // Obtaining role by name
+  async getRoleByName(name: string): Promise<Types.ObjectId | null> {
     try {
       const existRole = await RoleModel.findOne({
         name: name,
       });
-      if (!existRole) {
-        throw new AppError("Role not found", 404);
+      if (existRole) {
+        return existRole._id;
+      } else {
+        return null;
       }
-      return existRole._id;
-    } catch (error) {
-      throw new AppError("Error fetching Roles", 500);
+    } catch (error: any) {
+      throw new AppError("Error fetching Roles", 500, error);
     }
   }
   // Create role
@@ -70,14 +149,22 @@ export class MongoRoleRepository implements IRoleRepository {
         description: description,
       });
       await newRole.save();
-    } catch (error) {
-      throw new AppError("Error creating role", 500);
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error creating role", 500);
+      }
     }
   }
-  async listRoles(): Promise<Role[]> {
+  // Obtaining role list
+  async getRoleList(): Promise<Role[]> {
     try {
       // Get role list
-      let roleList: Role[] = await RoleModel.find();
+      let roleList: Role[] = await RoleModel.find()
+        .select("-description -__v")
+        .exec();
+
       // return role list
       return roleList;
     } catch (error: any) {

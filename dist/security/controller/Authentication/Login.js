@@ -5,7 +5,7 @@
 // import { createToken } from "../../utils/tokenManager";
 // import { getCurrentDate } from "../../../utils/dateManager";
 // import RoleModel from "../../roles/models/RolesModel";
-// import { compareHashPassword } from "@modules/security/shared/passwordManager";
+// import { compareHashPassword } from "../../../modules/security/shared/passwordManager";
 // // import { io } from "../../../server";
 // export const LoginController = async (req: Request, res: Response) => {
 //   console.log(

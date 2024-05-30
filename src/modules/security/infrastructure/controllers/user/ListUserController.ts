@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { MongoUserRepository } from "../../repositories/MongoUserRepository";
-import { IListUserUseCase, ListUserUseCase } from "@modules/security/application/useCases/user/ListUserUseCase";
+import {
+  IListUserUseCase,
+  ListUserUseCase,
+} from "@modules/security/application/useCases/user/ListUserUseCase";
 
 export class ListUserController {
   private readonly listUserUseCase: IListUserUseCase;
@@ -14,7 +17,7 @@ export class ListUserController {
       res.status(200).send(users);
     } catch (error) {
       console.error("Error creating user:", error);
-      res.status(500).send("Error creating user");
+      res.status(500).json({ message: "Error creating user" });
     }
   }
 }

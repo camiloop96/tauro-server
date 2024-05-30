@@ -3,11 +3,67 @@ import { IUserRepository } from "@modules/security/domain/repositories/IUserRepo
 import { Types, isValidObjectId } from "mongoose";
 import { AppError } from "src/shared/errors/AppError";
 import UserModel from "../models/UserModel";
-import CredentialModel from "../models/CredentialModel";
+import { decodeToken } from "@modules/security/shared/tokenManager";
 
 export class MongoUserRepository implements IUserRepository {
-  getUsersByRol(): Promise<User[]> {
-    throw new Error("Method not implemented.");
+  async getUserByCredential(credential: Types.ObjectId): Promise<User> {
+    try {
+      if (!credential || !isValidObjectId(credential)) {
+        throw new AppError("Missing or invalid ID", 400);
+      }
+      const existCredential: User | null = await UserModel.findOne({
+        credential: credential,
+      });
+
+      if (!existCredential) {
+        throw new AppError("Invalid credentials", 404);
+      }
+
+      return existCredential;
+    } catch (error) {
+      throw new AppError("Error fetching user", 500);
+    }
+  }
+  async getUserByToken(token: string): Promise<Types.ObjectId> {
+    try {
+      // Check missing token
+      if (!token) {
+        throw new AppError("Missing token", 400);
+      }
+      // Decode token
+      const decodedToken = await decodeToken(token);
+
+      if (!decodedToken) {
+        throw new AppError("Token not valid", 400);
+      }
+
+      // Search User
+      const userId = decodedToken.userId;
+      const findUser = await UserModel.findById(userId);
+
+      if (!findUser) {
+        throw new AppError("User not found", 404);
+      }
+
+      return findUser._id;
+    } catch (error) {
+      throw new AppError("Error fetching user", 500);
+    }
+  }
+  async getUsersByRole(id: Types.ObjectId): Promise<User[]> {
+    try {
+      // Check is valid ID
+      if (!id || !isValidObjectId(id)) {
+        throw new AppError("Missing or invalid ID", 400);
+      }
+      // Find User list
+      let userList: User[] = await UserModel.find({
+        role: id,
+      });
+      return userList;
+    } catch (error: any) {
+      throw new AppError("Error fetching users", 400, error);
+    }
   }
   async isExistEmployeeUser(id: Types.ObjectId): Promise<boolean> {
     try {
@@ -52,17 +108,16 @@ export class MongoUserRepository implements IUserRepository {
       throw new AppError("Error fetching user", 500);
     }
   }
-  async save(user: User): Promise<void> {
-    const newCredential = new CredentialModel({
-      username: user.username,
-      password: user.password,
-    });
-    const newUser = new UserModel({
-      employee: user.employee,
-      role: user.role,
-      credential: newCredential._id,
-    });
-    await newUser.save();
-    await newCredential.save();
+  async saveUser(user: User): Promise<void> {
+    try {
+      const newUser = new UserModel({
+        employee: user.employee,
+        role: user.role,
+        credential: user.credential,
+      });
+      await newUser.save();
+    } catch (error) {
+      throw new AppError("Error saving user", 500);
+    }
   }
 }

@@ -49,19 +49,18 @@ export class CreateUserUseCase implements ICreateUserUseCase {
       // Creating credential
       const createCredential =
         await this.credentialsRepository.createCredential({
+          _id: undefined,
           username: userData.username,
           password: userData.password,
         });
 
       // Creating user
-      const createUser = new UserModel({
+
+      await this.userRepository.saveUser({
         employee: userData.employee,
         role: existingRole,
         credential: createCredential,
       });
-
-      // Saving user
-      await createUser.save();
     } catch (error) {
       throw new AppError("Error creating user", 500);
     }

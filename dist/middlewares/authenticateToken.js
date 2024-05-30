@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authenticateToken = void 0;
 const dotenv_1 = require("dotenv");
-const tokenManager_1 = require("../security/utils/tokenManager");
+const tokenManager_1 = require("../modules/security/shared/tokenManager");
 const authenticateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     // Variables de entorno

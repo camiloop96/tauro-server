@@ -16,8 +16,70 @@ exports.MongoUserRepository = void 0;
 const mongoose_1 = require("mongoose");
 const AppError_1 = require("src/shared/errors/AppError");
 const UserModel_1 = __importDefault(require("../models/UserModel"));
-const CredentialModel_1 = __importDefault(require("../models/CredentialModel"));
+const tokenManager_1 = require("../../../security/shared/tokenManager");
 class MongoUserRepository {
+    getUserByCredential(credential) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!credential || !(0, mongoose_1.isValidObjectId)(credential)) {
+                    throw new AppError_1.AppError("Missing or invalid ID", 400);
+                }
+                const existCredential = yield UserModel_1.default.findOne({
+                    credential: credential,
+                });
+                if (!existCredential) {
+                    throw new AppError_1.AppError("Invalid credentials", 404);
+                }
+                return existCredential;
+            }
+            catch (error) {
+                throw new AppError_1.AppError("Error fetching user", 500);
+            }
+        });
+    }
+    getUserByToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Check missing token
+                if (!token) {
+                    throw new AppError_1.AppError("Missing token", 400);
+                }
+                // Decode token
+                const decodedToken = yield (0, tokenManager_1.decodeToken)(token);
+                if (!decodedToken) {
+                    throw new AppError_1.AppError("Token not valid", 400);
+                }
+                // Search User
+                const userId = decodedToken.userId;
+                const findUser = yield UserModel_1.default.findById(userId);
+                if (!findUser) {
+                    throw new AppError_1.AppError("User not found", 404);
+                }
+                return findUser._id;
+            }
+            catch (error) {
+                throw new AppError_1.AppError("Error fetching user", 500);
+            }
+        });
+    }
+    getUsersByRole(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Check is valid ID
+                if (!id || !(0, mongoose_1.isValidObjectId)(id)) {
+                    throw new AppError_1.AppError("Missing or invalid ID", 400);
+                }
+                // Find User list
+                let userList = yield UserModel_1.default.find({
+                    role: id,
+                });
+                return userList;
+            }
+            catch (error) {
+                throw new AppError_1.AppError("Error fetching users", 400, error);
+            }
+        });
+    }
     isExistEmployeeUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -28,10 +90,10 @@ class MongoUserRepository {
                     employee: id,
                 });
                 if (existEmployeeUser) {
-                    throw new AppError_1.AppError("The employee already has an associated user", 400);
+                    return true;
                 }
                 else {
-                    return;
+                    return false;
                 }
             }
             catch (error) {
@@ -70,19 +132,19 @@ class MongoUserRepository {
             }
         });
     }
-    save(user) {
+    saveUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newCredential = new CredentialModel_1.default({
-                username: user.username,
-                password: user.password,
-            });
-            const newUser = new UserModel_1.default({
-                employee: user.employee,
-                role: user.role,
-                credential: newCredential._id,
-            });
-            yield newUser.save();
-            yield newCredential.save();
+            try {
+                const newUser = new UserModel_1.default({
+                    employee: user.employee,
+                    role: user.role,
+                    credential: user.credential,
+                });
+                yield newUser.save();
+            }
+            catch (error) {
+                throw new AppError_1.AppError("Error saving user", 500);
+            }
         });
     }
 }

@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserController = void 0;
 const MongoUserRepository_1 = require("../../repositories/MongoUserRepository");
-const CreateUserUseCase_1 = require("@modules/security/application/useCases/user/CreateUserUseCase");
-const MongoEmployeeRepository_1 = require("@modules/staff/infrastructure/repositories/MongoEmployeeRepository");
+const CreateUserUseCase_1 = require("../../../../security/application/useCases/user/CreateUserUseCase");
+const MongoEmployeeRepository_1 = require("../../../../staff/infrastructure/repositories/MongoEmployeeRepository");
 const MongoRoleRepository_1 = require("../../repositories/MongoRoleRepository");
 const MongoCredentialRepository_1 = require("../../repositories/MongoCredentialRepository");
 class CreateUserController {

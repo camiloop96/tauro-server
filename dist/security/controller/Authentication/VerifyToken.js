@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifyTokenController = void 0;
-const tokenManager_1 = require("../../utils/tokenManager");
+const tokenManager_1 = require("../../../modules/security/shared/tokenManager");
 const dateManager_1 = require("../../../utils/dateManager");
 const VerifyTokenController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`${(0, dateManager_1.getCurrentDate)()} ${req.method} simora/api/authentication/security/token/verify/`);
