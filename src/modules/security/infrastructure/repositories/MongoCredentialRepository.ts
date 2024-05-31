@@ -2,8 +2,8 @@ import { Credential } from "@modules/security/domain/entities/Credential";
 import { ICredentialsRepository } from "@modules/security/domain/repositories/ICredentialRepository";
 import CredentialModel from "../models/CredentialModel";
 import { Types } from "mongoose";
-import { AppError } from "src/shared/errors/AppError";
 import { generateHashPassword } from "@modules/security/shared/passwordManager";
+import { AppError } from "@shared/errors/AppError";
 
 export class MongoCredentialRepository implements ICredentialsRepository {
   async getCredentialsByUsername(username: string): Promise<Credential> {
@@ -15,8 +15,12 @@ export class MongoCredentialRepository implements ICredentialsRepository {
         throw new AppError("Invalid credentials", 401);
       }
       return existCredential;
-    } catch (error) {
-      throw new AppError("Error fetching credentials", 500);
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching credentials", 500);
+      }
     }
   }
   async createCredential(credential: Credential): Promise<Types.ObjectId> {
@@ -48,7 +52,11 @@ export class MongoCredentialRepository implements ICredentialsRepository {
       // Return id
       return save._id;
     } catch (error: any) {
-      throw new AppError("Error creating credential", 500, error);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error creating credential", 500, error);
+      }
     }
   }
 }

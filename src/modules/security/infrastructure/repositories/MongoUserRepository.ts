@@ -1,9 +1,11 @@
 import { User } from "@modules/security/domain/entities/User";
 import { IUserRepository } from "@modules/security/domain/repositories/IUserRepository";
 import { Types, isValidObjectId } from "mongoose";
-import { AppError } from "src/shared/errors/AppError";
 import UserModel from "../models/UserModel";
-import { decodeToken } from "@modules/security/shared/tokenManager";
+import { AppError } from "@shared/errors/AppError";
+import { JWTAuthenticationRepository } from "./JWTAuthenticationRepository";
+
+const tokenManager = new JWTAuthenticationRepository();
 
 export class MongoUserRepository implements IUserRepository {
   async getUserByCredential(credential: Types.ObjectId): Promise<User> {
@@ -21,7 +23,11 @@ export class MongoUserRepository implements IUserRepository {
 
       return existCredential;
     } catch (error) {
-      throw new AppError("Error fetching user", 500);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching user", 500);
+      }
     }
   }
   async getUserByToken(token: string): Promise<Types.ObjectId> {
@@ -31,7 +37,7 @@ export class MongoUserRepository implements IUserRepository {
         throw new AppError("Missing token", 400);
       }
       // Decode token
-      const decodedToken = await decodeToken(token);
+      const decodedToken = await tokenManager.decodeToken(token);
 
       if (!decodedToken) {
         throw new AppError("Token not valid", 400);

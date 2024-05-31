@@ -18,9 +18,7 @@ const AdressItem_1 = __importDefault(require("../../customer/models/AdressItem")
 const OrderModel_1 = __importDefault(require("../models/OrderModel"));
 const ProductModel_1 = __importDefault(require("../../products/models/ProductModel"));
 const guide_1 = require("../guide/controller/guide");
-// import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
-const OrderBySeller_1 = __importDefault(require("../models/OrderBySeller"));
-const SellerModel_1 = require("../../staff/Seller/models/SellerModel");
+// import { SellerModel } from "../../staff/Seller/models/SellerModel";
 // import UserModel from "../../security/users/models/UserModel";
 const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
@@ -194,22 +192,22 @@ const CreateOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         createOrder.cobros.IVA = iva;
         createOrder.cobros.total = total;
         // Guardado del pedido al vendedor
-        let findSeller = yield SellerModel_1.SellerModel.findById(vendedor);
-        if (!findSeller) {
-            return res.status(400).json({
-                error: "No se encontro vendedor asociado",
-            });
-        }
-        if (!findSeller.active) {
-            return res.status(400).json({
-                error: "El vendedor se encuentra inactivo",
-            });
-        }
-        let saveOrderAtSeller = new OrderBySeller_1.default({
-            sellerID: findSeller._id,
-            orderID: createOrder._id,
-        });
-        yield saveOrderAtSeller.save();
+        // let findSeller = await SellerModel.findById(vendedor);
+        // if (!findSeller) {
+        //   return res.status(400).json({
+        //     error: "No se encontro vendedor asociado",
+        //   });
+        // }
+        // if (!findSeller.active) {
+        //   return res.status(400).json({
+        //     error: "El vendedor se encuentra inactivo",
+        //   });
+        // }
+        // let saveOrderAtSeller = new OrderBySellerModel({
+        //   sellerID: findSeller._id,
+        //   orderID: createOrder._id,
+        // });
+        // await saveOrderAtSeller.save();
         yield createOrder.save();
         res.status(200).json({
             message: "Pedido agendado con éxito",

@@ -14,9 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoUserRepository = void 0;
 const mongoose_1 = require("mongoose");
-const AppError_1 = require("src/shared/errors/AppError");
 const UserModel_1 = __importDefault(require("../models/UserModel"));
-const tokenManager_1 = require("../../../security/shared/tokenManager");
+const AppError_1 = require("../../../../shared/errors/AppError");
+const JWTAuthenticationRepository_1 = require("./JWTAuthenticationRepository");
+const tokenManager = new JWTAuthenticationRepository_1.JWTAuthenticationRepository();
 class MongoUserRepository {
     getUserByCredential(credential) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -33,7 +34,12 @@ class MongoUserRepository {
                 return existCredential;
             }
             catch (error) {
-                throw new AppError_1.AppError("Error fetching user", 500);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching user", 500);
+                }
             }
         });
     }
@@ -45,7 +51,7 @@ class MongoUserRepository {
                     throw new AppError_1.AppError("Missing token", 400);
                 }
                 // Decode token
-                const decodedToken = yield (0, tokenManager_1.decodeToken)(token);
+                const decodedToken = yield tokenManager.decodeToken(token);
                 if (!decodedToken) {
                     throw new AppError_1.AppError("Token not valid", 400);
                 }

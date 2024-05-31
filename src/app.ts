@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import App_Routes from "./routes/routes";
+import appRoutes from "./routes/routes";
 
 // Creación del servidor
 const APP: Express = express();
@@ -21,7 +22,7 @@ APP.get("/", (req: Request, res: Response) => {
 });
 
 // Gateway
-APP.use("/simora/api/", App_Routes);
+APP.use("/simora/api/", appRoutes);
 
 // Manejador de errores para middleware no encontrado
 APP.use((req: Request, res: Response) => {

@@ -11,16 +11,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoEmployeeRepository = void 0;
 const mongoose_1 = require("mongoose");
-const AppError_1 = require("src/shared/errors/AppError");
 const EmployeeModel_1 = require("../models/EmployeeModel");
+const AppError_1 = require("../../../../shared/errors/AppError");
 class MongoEmployeeRepository {
+    saveEmployee(employee) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield employee.save();
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error creating employee", 500);
+                }
+            }
+        });
+    }
     employeeExist(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (!id || !(0, mongoose_1.isValidObjectId)(id)) {
+                if (!id || isNaN(id)) {
                     throw new AppError_1.AppError("Invalid or missing ID", 400);
                 }
-                let existingEmployee = yield EmployeeModel_1.EmployeeModel.findById(id);
+                let existingEmployee = yield EmployeeModel_1.EmployeeModel.findOne({ DNI: id });
                 if (existingEmployee) {
                     return true;
                 }
@@ -29,7 +44,12 @@ class MongoEmployeeRepository {
                 }
             }
             catch (error) {
-                throw new AppError_1.AppError("Error fetching employee", 500);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching employee", 500);
+                }
             }
         });
     }
@@ -46,39 +66,51 @@ class MongoEmployeeRepository {
                 return existingEmployee._id;
             }
             catch (error) {
-                throw new AppError_1.AppError("Error fetching employee", 500);
+                if (error instanceof error) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching employee", 500);
+                }
             }
         });
     }
     createEmployee(employee) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (!employee.name || employee.name.length === 0) {
+                // Destructure params
+                const { name, lastName, DNI, branchStore, position } = employee || {};
+                if (!name || name.length === 0) {
                     throw new AppError_1.AppError("Name is required", 400);
                 }
-                if (!employee.lastName || employee.lastName.length === 0) {
+                if (!lastName || lastName.length === 0) {
                     throw new AppError_1.AppError("Lastname is required", 400);
                 }
-                if (!employee.DNI) {
+                if (!DNI) {
                     throw new AppError_1.AppError("DNI is required", 400);
                 }
-                else if (isNaN(employee.DNI)) {
+                else if (isNaN(DNI)) {
                     throw new AppError_1.AppError("DNI must be valid number", 400);
                 }
-                if (!employee.branchStore || !(0, mongoose_1.isValidObjectId)(employee.branchStore)) {
+                if (!branchStore || !(0, mongoose_1.isValidObjectId)(branchStore)) {
                     throw new AppError_1.AppError("Invalid or missing Branch Store ID", 400);
                 }
                 let existingEmployee = yield EmployeeModel_1.EmployeeModel.findOne({
-                    DNI: employee.DNI,
+                    DNI: DNI,
                 });
                 if (existingEmployee) {
                     throw new AppError_1.AppError("User is already exist", 400);
                 }
                 let newEmployee = new EmployeeModel_1.EmployeeModel(employee);
-                yield newEmployee.save();
+                return newEmployee;
             }
             catch (error) {
-                throw new AppError_1.AppError("Error creating employee", 500);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error creating employee", 500);
+                }
             }
         });
     }

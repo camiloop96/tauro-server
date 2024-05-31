@@ -18,10 +18,11 @@ const userRoutes = (0, express_1.Router)();
 // Create user controller instances
 const createUserController = new CreateUserController_1.CreateUserController();
 const listUserController = new ListUserController_1.ListUserController();
+// Routes
 userRoutes.post("/create/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield createUserController.execute(req, res);
 }));
-userRoutes.get("/all/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+userRoutes.get("/list/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield listUserController.execute(req, res);
 }));
 // UserRoutes.delete("/delete/:id/", DeleteUserById);

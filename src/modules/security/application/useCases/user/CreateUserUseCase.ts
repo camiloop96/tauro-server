@@ -1,10 +1,9 @@
 import { ICredentialsRepository } from "@modules/security/domain/repositories/ICredentialRepository";
 import { IRoleRepository } from "@modules/security/domain/repositories/IRoleRepository";
 import { IUserRepository } from "@modules/security/domain/repositories/IUserRepository";
-import UserModel from "@modules/security/infrastructure/models/UserModel";
 import { IEmployeeRepository } from "@modules/staff/domain/repositories/IEmployeeRepository";
+import { AppError } from "@shared/errors/AppError";
 import { Types } from "mongoose";
-import { AppError } from "src/shared/errors/AppError";
 
 export interface ICreateUserUseCase {
   execute(userData: IUserRequest): Promise<void>;

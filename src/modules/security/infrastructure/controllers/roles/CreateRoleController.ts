@@ -14,7 +14,7 @@ export class CreateRoleController {
   }
 
   async execute(req: Request, res: Response): Promise<void> {
-    logSuccess(`POST simora/api/dashboard/security/role/create/`)
+    logSuccess(`POST simora/api/dashboard/security/role/create/`);
     try {
       const { name, description } = req.body;
       await this.createRoleUseCase.execute({

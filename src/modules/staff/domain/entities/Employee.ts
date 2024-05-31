@@ -7,6 +7,6 @@ export class Employee {
     public DNI: number,
     public branchStore: Types.ObjectId,
     public position: string,
-    public _id: Types.ObjectId
+    public _id?: Types.ObjectId
   ) {}
 }

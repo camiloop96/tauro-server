@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserUseCase = void 0;
-const AppError_1 = require("src/shared/errors/AppError");
+const AppError_1 = require("../../../../../shared/errors/AppError");
 class CreateUserUseCase {
     constructor(userRepository, employeeRepository, roleRepository, credentialsRepository) {
         this.userRepository = userRepository;

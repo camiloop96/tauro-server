@@ -10,10 +10,11 @@ const userRoutes = Router();
 const createUserController = new CreateUserController();
 const listUserController = new ListUserController();
 
+// Routes
 userRoutes.post("/create/", async (req: Request, res: Response) => {
   await createUserController.execute(req, res);
 });
-userRoutes.get("/all/", async (req: Request, res: Response) => {
+userRoutes.get("/list/", async (req: Request, res: Response) => {
   await listUserController.execute(req, res);
 });
 // UserRoutes.delete("/delete/:id/", DeleteUserById);

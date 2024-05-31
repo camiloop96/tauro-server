@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { DotenvParseOutput, config } from "dotenv";
-import { decodeToken, verifyToken } from "../modules/security/shared/tokenManager";
+import { config } from "dotenv";
+import { JWTAuthenticationRepository } from "@modules/security/infrastructure/repositories/JWTAuthenticationRepository";
 
 interface AuthenticatedRequest extends Request {
   user?: JwtPayload | string | undefined;
@@ -18,6 +18,7 @@ export const authenticateToken = async (
   let JWT_SECRET: string | undefined = process.env.JWT_SECRET;
 
   try {
+    const tokenManager = new JWTAuthenticationRepository();
     const token = req.header("Authorization");
 
     if (!token) {
@@ -34,14 +35,14 @@ export const authenticateToken = async (
     }
 
     // Validación de token
-    let isValidToken: boolean = await verifyToken(tokenFormatted);
+    let isValidToken: boolean = await tokenManager.verifyToken(tokenFormatted);
 
     if (!isValidToken) {
       return res.status(403).json({ message: "Acceso denegado" });
     }
 
     // Extracción del rol del token
-    let decodedToken = await decodeToken(tokenFormatted);
+    let decodedToken = await tokenManager.decodeToken(tokenFormatted);
     req.role = decodedToken && decodedToken.role;
     req.user = decodedToken && decodedToken.userId;
 

@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoCredentialRepository = void 0;
 const CredentialModel_1 = __importDefault(require("../models/CredentialModel"));
-const AppError_1 = require("src/shared/errors/AppError");
 const passwordManager_1 = require("../../../security/shared/passwordManager");
+const AppError_1 = require("../../../../shared/errors/AppError");
 class MongoCredentialRepository {
     getCredentialsByUsername(username) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -29,7 +29,12 @@ class MongoCredentialRepository {
                 return existCredential;
             }
             catch (error) {
-                throw new AppError_1.AppError("Error fetching credentials", 500);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching credentials", 500);
+                }
             }
         });
     }
@@ -58,7 +63,12 @@ class MongoCredentialRepository {
                 return save._id;
             }
             catch (error) {
-                throw new AppError_1.AppError("Error creating credential", 500, error);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error creating credential", 500, error);
+                }
             }
         });
     }
