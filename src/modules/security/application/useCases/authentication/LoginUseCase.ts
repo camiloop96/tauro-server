@@ -36,6 +36,8 @@ export class LoginUseCase implements ILoginUseCase {
       existCredential?._id
     );
 
+    console.log(findUser);
+    
     // Compare hash password
     const comparePassword = await compareHashPassword(
       password,

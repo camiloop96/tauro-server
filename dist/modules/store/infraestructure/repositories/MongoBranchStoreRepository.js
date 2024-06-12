@@ -14,6 +14,38 @@ const AppError_1 = require("../../../../shared/errors/AppError");
 const BranchStore_1 = require("../models/BranchStore");
 const mongoose_1 = require("mongoose");
 class MongoBranchStoreRepository {
+    createRootBranchStore(branchStore) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { name, state, city } = branchStore || {};
+                if (!name) {
+                    throw new AppError_1.AppError("Name field is missing", 400);
+                }
+                if (!state) {
+                    throw new AppError_1.AppError("State field is missing", 400);
+                }
+                if (!city) {
+                    throw new AppError_1.AppError("City field is missing", 400);
+                }
+                const newBranchStore = new BranchStore_1.BranchStoreModel({
+                    name: name,
+                    state: state,
+                    city: city,
+                });
+                const saveBranchStore = yield newBranchStore.save();
+                const parseID = new mongoose_1.Types.ObjectId(saveBranchStore._id);
+                return parseID;
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error creating branch store", 500);
+                }
+            }
+        });
+    }
     updateBranchStore(branchStoreID, payload) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -93,14 +125,14 @@ class MongoBranchStoreRepository {
             }
         });
     }
-    checkIfBranchStoreExistByCity(name) {
+    checkIfBranchStoreExistByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (!name || name.length === 0) {
                     throw new AppError_1.AppError("Missing or invalid branch store name", 400);
                 }
                 const existBranchStore = yield BranchStore_1.BranchStoreModel.findOne({
-                    city: name,
+                    name: name,
                 });
                 if (existBranchStore) {
                     return true;

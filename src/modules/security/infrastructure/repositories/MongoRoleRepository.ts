@@ -5,6 +5,21 @@ import { Types, isValidObjectId } from "mongoose";
 import { AppError } from "@shared/errors/AppError";
 
 export class MongoRoleRepository implements IRoleRepository {
+  async createRootRole(role: string): Promise<Types.ObjectId> {
+    try {
+      const createRole = new RoleModel({
+        name: role,
+      });
+      const saveRole = await createRole.save();
+      return saveRole._id;
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error creating root user", 500);
+      }
+    }
+  }
   // Obtaining role by user ID
   async getRoleByUserId(id: Types.ObjectId): Promise<string> {
     try {

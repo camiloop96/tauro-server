@@ -17,6 +17,25 @@ const RoleModel_1 = __importDefault(require("../models/RoleModel"));
 const mongoose_1 = require("mongoose");
 const AppError_1 = require("../../../../shared/errors/AppError");
 class MongoRoleRepository {
+    createRootRole(role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const createRole = new RoleModel_1.default({
+                    name: role,
+                });
+                const saveRole = yield createRole.save();
+                return saveRole._id;
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error creating root user", 500);
+                }
+            }
+        });
+    }
     // Obtaining role by user ID
     getRoleByUserId(id) {
         return __awaiter(this, void 0, void 0, function* () {

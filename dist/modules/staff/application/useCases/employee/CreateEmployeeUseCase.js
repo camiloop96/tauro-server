@@ -25,7 +25,7 @@ class CreateEmployeeUseCase {
             // Check if branch store exist
             const branchStoreExist = yield this.branchStoreRepository.checkIfBranchStoreExist(parsedBranchStoreID);
             if (!branchStoreExist) {
-                throw new AppError_1.AppError("Branch Store not found ", 404);
+                throw new AppError_1.AppError("Branch Store not found", 404);
             }
             // Check if employee exist
             const employeeExist = yield this.employeeRepository.employeeExist(DNI);

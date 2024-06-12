@@ -6,6 +6,50 @@ import { generateHashPassword } from "@modules/security/shared/passwordManager";
 import { AppError } from "@shared/errors/AppError";
 
 export class MongoCredentialRepository implements ICredentialsRepository {
+  async credentialIsExist(username: string): Promise<boolean | null> {
+    try {
+      const existCredential = await CredentialModel.findOne({
+        username: username,
+      });
+      if (existCredential) {
+        return true;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching credentials", 500, error);
+      }
+    }
+  }
+  async createRootCredential(credential: Credential): Promise<Types.ObjectId> {
+    try {
+      const { username, password } = credential || {};
+
+      // Hash password
+      const hashPassword = await generateHashPassword(password);
+
+      // Create credential
+      const newCredential = new CredentialModel({
+        username: username,
+        password: hashPassword,
+      });
+
+      // Save credential
+      const saveCredential = await newCredential.save();
+
+      // Return
+      return saveCredential._id;
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error creating root credentials", 500);
+      }
+    }
+  }
   async getCredentialsByUsername(username: string): Promise<Credential> {
     try {
       const existCredential = await CredentialModel.findOne({

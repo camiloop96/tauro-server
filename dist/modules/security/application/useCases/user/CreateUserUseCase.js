@@ -12,40 +12,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserUseCase = void 0;
 const AppError_1 = require("../../../../../shared/errors/AppError");
 class CreateUserUseCase {
-    constructor(userRepository, employeeRepository, roleRepository, credentialsRepository) {
+    constructor(userRepository, employeeRepository, roleRepository, credentialsRepository, branchStoreRepository) {
         this.userRepository = userRepository;
         this.employeeRepository = employeeRepository;
         this.roleRepository = roleRepository;
         this.credentialsRepository = credentialsRepository;
+        this.branchStoreRepository = branchStoreRepository;
     }
     execute(userData) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                // Existing user
-                const existingEmployee = yield this.employeeRepository.getEmployeeById(userData.employee);
-                // Existing user by employee id
-                const existEmployeeUser = yield this.userRepository.isExistEmployeeUser(existingEmployee);
-                if (existEmployeeUser) {
-                    throw new AppError_1.AppError("The employee already has an associated user", 400);
-                }
-                // ExistingRole
-                const existingRole = yield this.roleRepository.getRoleByName(userData.role);
-                // Creating credential
-                const createCredential = yield this.credentialsRepository.createCredential({
-                    _id: undefined,
-                    username: userData.username,
-                    password: userData.password,
-                });
-                // Creating user
-                yield this.userRepository.saveUser({
-                    employee: userData.employee,
-                    role: existingRole,
-                    credential: createCredential,
-                });
+            // Existing user
+            const existingEmployee = yield this.employeeRepository.getEmployeeById(userData.employee);
+            // Existing user by employee id
+            const existEmployeeUser = yield this.userRepository.isExistEmployeeUser(existingEmployee);
+            if (existEmployeeUser) {
+                throw new AppError_1.AppError("The employee already has an associated user", 400);
             }
-            catch (error) {
-                throw new AppError_1.AppError("Error creating user", 500);
-            }
+            // ExistingRole
+            const existingRole = yield this.roleRepository.getRoleByName(userData.role);
+            // Creating credential
+            const createCredential = yield this.credentialsRepository.createCredential({
+                _id: undefined,
+                username: userData.username,
+                password: userData.password,
+            });
+            // Creating user
+            yield this.userRepository.saveUser({
+                employee: userData.employee,
+                role: existingRole,
+                credential: createCredential,
+            });
         });
     }
 }

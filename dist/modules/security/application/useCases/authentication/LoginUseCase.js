@@ -28,6 +28,7 @@ class LoginUseCase {
             console.log(existCredential);
             // Get user by credential
             const findUser = yield this.userRepository.getUserByCredential(existCredential === null || existCredential === void 0 ? void 0 : existCredential._id);
+            console.log(findUser);
             // Compare hash password
             const comparePassword = yield (0, passwordManager_1.compareHashPassword)(password, existCredential.password);
             if (!comparePassword) {

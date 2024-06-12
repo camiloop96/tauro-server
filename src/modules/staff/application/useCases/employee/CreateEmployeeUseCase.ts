@@ -37,7 +37,7 @@ export class CreateEmployeeUseCase implements ICreateEmployeeUseCase {
       );
 
     if (!branchStoreExist) {
-      throw new AppError("Branch Store not found ", 404);
+      throw new AppError("Branch Store not found", 404);
     }
 
     // Check if employee exist

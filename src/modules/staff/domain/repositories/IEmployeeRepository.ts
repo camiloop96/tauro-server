@@ -7,4 +7,5 @@ export interface IEmployeeRepository {
   getEmployeeById(id: Types.ObjectId): Promise<Types.ObjectId>;
   employeeExist(id: number): Promise<boolean>;
   saveEmployee(employee: Document): Promise<void>;
+  employeeExistByDNI(DNI: number): Promise<boolean>;
 }

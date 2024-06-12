@@ -8,6 +8,22 @@ import { JWTAuthenticationRepository } from "./JWTAuthenticationRepository";
 const tokenManager = new JWTAuthenticationRepository();
 
 export class MongoUserRepository implements IUserRepository {
+  async createRootUser(user: User): Promise<void> {
+    try {
+      const newUser = new UserModel({
+        employee: user.employee,
+        role: user.role,
+        credential: user.credential,
+      });
+      await newUser.save();
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error creating user", 500);
+      }
+    }
+  }
   async getUserByCredential(credential: Types.ObjectId): Promise<User> {
     try {
       if (!credential || !isValidObjectId(credential)) {
@@ -52,8 +68,12 @@ export class MongoUserRepository implements IUserRepository {
       }
 
       return findUser._id;
-    } catch (error) {
-      throw new AppError("Error fetching user", 500);
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching user", 500);
+      }
     }
   }
   async getUsersByRole(id: Types.ObjectId): Promise<User[]> {
@@ -85,7 +105,11 @@ export class MongoUserRepository implements IUserRepository {
         return false;
       }
     } catch (error) {
-      throw new AppError("Error fetching employee", 500);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching user employee", 500);
+      }
     }
   }
   async getByEmployeeId(id: string): Promise<User | null> {
@@ -102,7 +126,11 @@ export class MongoUserRepository implements IUserRepository {
       // Return user object
       return existUser;
     } catch (error: any) {
-      throw new AppError("Error fetching user", 500, error);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching user", 500);
+      }
     }
   }
 
@@ -123,7 +151,11 @@ export class MongoUserRepository implements IUserRepository {
       });
       await newUser.save();
     } catch (error) {
-      throw new AppError("Error saving user", 500);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error saving user", 500);
+      }
     }
   }
 }

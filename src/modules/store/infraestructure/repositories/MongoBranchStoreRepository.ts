@@ -5,6 +5,37 @@ import { BranchStoreModel } from "../models/BranchStore";
 import { Types, isValidObjectId } from "mongoose";
 
 export class MongoBranchStoreRepository implements IBranchStoreRepository {
+  async createRootBranchStore(
+    branchStore: BranchStore
+  ): Promise<Types.ObjectId> {
+    try {
+      const { name, state, city } = branchStore || {};
+      if (!name) {
+        throw new AppError("Name field is missing", 400);
+      }
+      if (!state) {
+        throw new AppError("State field is missing", 400);
+      }
+      if (!city) {
+        throw new AppError("City field is missing", 400);
+      }
+
+      const newBranchStore = new BranchStoreModel({
+        name: name,
+        state: state,
+        city: city,
+      });
+      const saveBranchStore = await newBranchStore.save();
+      const parseID = new Types.ObjectId(saveBranchStore._id);
+      return parseID;
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error creating branch store", 500);
+      }
+    }
+  }
   async updateBranchStore(
     branchStoreID: Types.ObjectId,
     payload: BranchStore
@@ -78,13 +109,13 @@ export class MongoBranchStoreRepository implements IBranchStoreRepository {
       }
     }
   }
-  async checkIfBranchStoreExistByCity(name: string): Promise<boolean> {
+  async checkIfBranchStoreExistByName(name: string): Promise<boolean> {
     try {
       if (!name || name.length === 0) {
         throw new AppError("Missing or invalid branch store name", 400);
       }
       const existBranchStore = await BranchStoreModel.findOne({
-        city: name,
+        name: name,
       });
 
       if (existBranchStore) {

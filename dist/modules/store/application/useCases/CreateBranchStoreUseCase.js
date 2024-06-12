@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateBranchStoreUseCase = void 0;
-const AppError_1 = require("../../../../shared/errors/AppError");
 class CreateBranchStoreUseCase {
     constructor(branchStoreRepository) {
         this.branchStoreRepository = branchStoreRepository;
@@ -19,11 +18,6 @@ class CreateBranchStoreUseCase {
         return __awaiter(this, void 0, void 0, function* () {
             // Destructing request
             const { name, state, city } = branchStoreData || {};
-            // Check if Branch Store exist
-            const branchStoreExist = yield this.branchStoreRepository.checkIfBranchStoreExistByCity(city);
-            if (branchStoreExist) {
-                throw new AppError_1.AppError("Branch Store is already exist", 400);
-            }
             // Save Branch Store
             yield this.branchStoreRepository.createBranchStore({ name, state, city });
         });

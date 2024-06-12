@@ -19,6 +19,7 @@ const logsMessages_1 = require("./utils/LogHandle/logsMessages");
 const MongoDBConnection_1 = __importDefault(require("./infrastructure/database/MongoDBConnection"));
 const env_1 = require("./config/env");
 const app_1 = __importDefault(require("./app"));
+const CreateRootUserController_1 = require("./modules/security/infrastructure/controllers/user/CreateRootUserController");
 // Import de variables de entorno
 (0, dotenv_1.config)();
 // Escuchar el servidor en el puerto especificado
@@ -56,6 +57,17 @@ function connectDB() {
 }
 // Call to connection at database
 connectDB();
+const InitializeRootData = () => __awaiter(void 0, void 0, void 0, function* () {
+    // Root user
+    const createRootUser = new CreateRootUserController_1.CreateRootUserController();
+    try {
+        yield createRootUser.execute();
+    }
+    catch (error) {
+        (0, logsMessages_1.logError)(`Error creating root data`);
+    }
+});
+InitializeRootData();
 // Websocket config
 const socketServer = new socketio_1.default(server);
 exports.IO = socketServer.getServer();

@@ -41,6 +41,10 @@ export class CreateEmployeeController {
       });
     } catch (error: any) {
       if (error instanceof AppError) {
+        return res.status(error.statusCode).json({
+          message: error.message,
+          status: error.statusCode,
+        });
       } else {
         logError(`Error creating employee: ${error.message}`);
         return res.status(500).json({

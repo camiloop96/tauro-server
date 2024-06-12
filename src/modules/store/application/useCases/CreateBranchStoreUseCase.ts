@@ -13,14 +13,6 @@ export class CreateBranchStoreUseCase implements ICreateBranchStoreUseCase {
     // Destructing request
     const { name, state, city } = branchStoreData || {};
 
-    // Check if Branch Store exist
-    const branchStoreExist =
-      await this.branchStoreRepository.checkIfBranchStoreExistByCity(city);
-
-    if (branchStoreExist) {
-      throw new AppError("Branch Store is already exist", 400);
-    }
-
     // Save Branch Store
     await this.branchStoreRepository.createBranchStore({ name, state, city });
   }

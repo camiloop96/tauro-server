@@ -14,6 +14,32 @@ const mongoose_1 = require("mongoose");
 const EmployeeModel_1 = require("../models/EmployeeModel");
 const AppError_1 = require("../../../../shared/errors/AppError");
 class MongoEmployeeRepository {
+    employeeExistByDNI(DNI) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (isNaN(DNI)) {
+                    throw new AppError_1.AppError("DNI must be number", 400);
+                }
+                const existEmployee = yield EmployeeModel_1.EmployeeModel.findOne({
+                    DNI: DNI,
+                });
+                if (existEmployee) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching employee", 500);
+                }
+            }
+        });
+    }
     saveEmployee(employee) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -79,7 +105,7 @@ class MongoEmployeeRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Destructure params
-                const { name, lastName, DNI, branchStore, position } = employee || {};
+                const { name, lastName, DNI, branchStore } = employee || {};
                 if (!name || name.length === 0) {
                     throw new AppError_1.AppError("Name is required", 400);
                 }
@@ -99,7 +125,7 @@ class MongoEmployeeRepository {
                     DNI: DNI,
                 });
                 if (existingEmployee) {
-                    throw new AppError_1.AppError("User is already exist", 400);
+                    throw new AppError_1.AppError("Employee is already exist", 400);
                 }
                 let newEmployee = new EmployeeModel_1.EmployeeModel(employee);
                 return newEmployee;

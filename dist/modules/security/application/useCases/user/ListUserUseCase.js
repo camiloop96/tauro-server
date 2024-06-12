@@ -16,7 +16,7 @@ class ListUserUseCase {
     }
     execute() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.userRepository.getList();
+            return this.userRepository.getList();
         });
     }
 }

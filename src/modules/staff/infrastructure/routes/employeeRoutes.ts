@@ -7,9 +7,12 @@ import { CreateEmployeeController } from "../controllers/CreateEmployeeControlle
 const employeeRoutes = Router();
 
 // Create Employee controller instances
-const createemployeeController = new CreateEmployeeController();
+const createEmployeeController = new CreateEmployeeController();
 
 // Routes
 employeeRoutes.post("/create/", async (req: Request, res: Response) => {
-  await createemployeeController.execute(req, res);
+  await createEmployeeController.execute(req, res);
 });
+
+// Export
+export default employeeRoutes;

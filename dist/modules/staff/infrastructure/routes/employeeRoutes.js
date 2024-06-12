@@ -15,8 +15,10 @@ const CreateEmployeeController_1 = require("../controllers/CreateEmployeeControl
 // Employee routes instance router
 const employeeRoutes = (0, express_1.Router)();
 // Create Employee controller instances
-const createemployeeController = new CreateEmployeeController_1.CreateEmployeeController();
+const createEmployeeController = new CreateEmployeeController_1.CreateEmployeeController();
 // Routes
 employeeRoutes.post("/create/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield createemployeeController.execute(req, res);
+    yield createEmployeeController.execute(req, res);
 }));
+// Export
+exports.default = employeeRoutes;

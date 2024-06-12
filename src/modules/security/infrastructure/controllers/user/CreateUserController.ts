@@ -7,6 +7,7 @@ import {
 import { MongoEmployeeRepository } from "@modules/staff/infrastructure/repositories/MongoEmployeeRepository";
 import { MongoRoleRepository } from "../../repositories/MongoRoleRepository";
 import { MongoCredentialRepository } from "../../repositories/MongoCredentialRepository";
+import { MongoBranchStoreRepository } from "@modules/store/infraestructure/repositories/MongoBranchStoreRepository";
 
 export class CreateUserController {
   private readonly createUserUseCase: ICreateUserUseCase;
@@ -15,7 +16,8 @@ export class CreateUserController {
       new MongoUserRepository(),
       new MongoEmployeeRepository(),
       new MongoRoleRepository(),
-      new MongoCredentialRepository()
+      new MongoCredentialRepository(),
+      new MongoBranchStoreRepository()
     );
   }
 

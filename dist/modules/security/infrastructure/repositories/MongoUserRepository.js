@@ -19,6 +19,26 @@ const AppError_1 = require("../../../../shared/errors/AppError");
 const JWTAuthenticationRepository_1 = require("./JWTAuthenticationRepository");
 const tokenManager = new JWTAuthenticationRepository_1.JWTAuthenticationRepository();
 class MongoUserRepository {
+    createRootUser(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const newUser = new UserModel_1.default({
+                    employee: user.employee,
+                    role: user.role,
+                    credential: user.credential,
+                });
+                yield newUser.save();
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error creating user", 500);
+                }
+            }
+        });
+    }
     getUserByCredential(credential) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -64,7 +84,12 @@ class MongoUserRepository {
                 return findUser._id;
             }
             catch (error) {
-                throw new AppError_1.AppError("Error fetching user", 500);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching user", 500);
+                }
             }
         });
     }
@@ -103,7 +128,12 @@ class MongoUserRepository {
                 }
             }
             catch (error) {
-                throw new AppError_1.AppError("Error fetching employee", 500);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching user employee", 500);
+                }
             }
         });
     }
@@ -123,7 +153,12 @@ class MongoUserRepository {
                 return existUser;
             }
             catch (error) {
-                throw new AppError_1.AppError("Error fetching user", 500, error);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching user", 500);
+                }
             }
         });
     }
@@ -149,7 +184,12 @@ class MongoUserRepository {
                 yield newUser.save();
             }
             catch (error) {
-                throw new AppError_1.AppError("Error saving user", 500);
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error saving user", 500);
+                }
             }
         });
     }

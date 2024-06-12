@@ -1,0 +1,11 @@
+{
+  "name": "Simora SAS BIC",
+  "lastName": "Master",
+  "DNI": 901679855,
+  "branchStore": {
+    "name": "Administrador Sucursales",
+    "city": "Bogotá",
+    "state": "Cundinamarca"
+  },
+  "position": "master"
+}

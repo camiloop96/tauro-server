@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ListUserController = void 0;
 const MongoUserRepository_1 = require("../../repositories/MongoUserRepository");
 const ListUserUseCase_1 = require("../../../../security/application/useCases/user/ListUserUseCase");
+const logsMessages_1 = require("../../../../../utils/LogHandle/logsMessages");
+const AppError_1 = require("../../../../../shared/errors/AppError");
 class ListUserController {
     constructor() {
         this.listUserUseCase = new ListUserUseCase_1.ListUserUseCase(new MongoUserRepository_1.MongoUserRepository());
@@ -20,11 +22,19 @@ class ListUserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const users = yield this.listUserUseCase.execute();
-                res.status(200).send(users);
+                res.status(200).json(users);
             }
             catch (error) {
-                console.error("Error creating user:", error);
-                res.status(500).json({ message: "Error creating user" });
+                if (error instanceof AppError_1.AppError) {
+                    return res.status(error.statusCode).json({
+                        message: error.message,
+                        status: error.statusCode,
+                    });
+                }
+                else {
+                    (0, logsMessages_1.logError)(`Error creating user: ${error}`);
+                    return res.status(500).json({ message: "Error creating user" });
+                }
             }
         });
     }

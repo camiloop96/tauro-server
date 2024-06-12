@@ -4,6 +4,7 @@ import { logError, logSuccess } from "@utils/LogHandle/logsMessages";
 import MongoDBConnection from "@infrastructure/database/MongoDBConnection";
 import { PORT, NODE_ENV } from "@config/env";
 import APP from "./app";
+import { CreateRootUserController } from "@modules/security/infrastructure/controllers/user/CreateRootUserController";
 
 // Import de variables de entorno
 config();
@@ -45,6 +46,18 @@ async function connectDB() {
 
 // Call to connection at database
 connectDB();
+
+const InitializeRootData = async () => {
+  // Root user
+  const createRootUser = new CreateRootUserController();
+  try {
+    await createRootUser.execute();
+  } catch (error) {
+    logError(`Error creating root data`);
+  }
+};
+
+InitializeRootData();
 
 // Websocket config
 const socketServer = new SocketServer(server);

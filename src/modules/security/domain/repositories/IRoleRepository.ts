@@ -11,4 +11,5 @@ export interface IRoleRepository {
   updateRole(id: Types.ObjectId, payload: Role): Promise<void>;
   roleIsExist(id: Types.ObjectId): Promise<boolean>;
   checkAndParseID(id: string): Promise<Types.ObjectId>;
+  createRootRole(role: string): Promise<Types.ObjectId>;
 }

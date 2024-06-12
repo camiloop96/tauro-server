@@ -17,6 +17,55 @@ const CredentialModel_1 = __importDefault(require("../models/CredentialModel"));
 const passwordManager_1 = require("../../../security/shared/passwordManager");
 const AppError_1 = require("../../../../shared/errors/AppError");
 class MongoCredentialRepository {
+    credentialIsExist(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const existCredential = yield CredentialModel_1.default.findOne({
+                    username: username,
+                });
+                if (existCredential) {
+                    return true;
+                }
+                else {
+                    return null;
+                }
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching credentials", 500, error);
+                }
+            }
+        });
+    }
+    createRootCredential(credential) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { username, password } = credential || {};
+                // Hash password
+                const hashPassword = yield (0, passwordManager_1.generateHashPassword)(password);
+                // Create credential
+                const newCredential = new CredentialModel_1.default({
+                    username: username,
+                    password: hashPassword,
+                });
+                // Save credential
+                const saveCredential = yield newCredential.save();
+                // Return
+                return saveCredential._id;
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error creating root credentials", 500);
+                }
+            }
+        });
+    }
     getCredentialsByUsername(username) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

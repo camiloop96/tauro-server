@@ -5,6 +5,28 @@ import { EmployeeModel } from "../models/EmployeeModel";
 import { AppError } from "@shared/errors/AppError";
 
 export class MongoEmployeeRepository implements IEmployeeRepository {
+  async employeeExistByDNI(DNI: number): Promise<boolean> {
+    try {
+      if (isNaN(DNI)) {
+        throw new AppError("DNI must be number", 400);
+      }
+      const existEmployee = await EmployeeModel.findOne({
+        DNI: DNI,
+      });
+
+      if (existEmployee) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching employee", 500);
+      }
+    }
+  }
   async saveEmployee(employee: Document): Promise<void> {
     try {
       await employee.save();
@@ -56,7 +78,7 @@ export class MongoEmployeeRepository implements IEmployeeRepository {
   async createEmployee(employee: Employee): Promise<Document> {
     try {
       // Destructure params
-      const { name, lastName, DNI, branchStore, position } = employee || {};
+      const { name, lastName, DNI, branchStore } = employee || {};
       if (!name || name.length === 0) {
         throw new AppError("Name is required", 400);
       }
@@ -76,7 +98,7 @@ export class MongoEmployeeRepository implements IEmployeeRepository {
       });
 
       if (existingEmployee) {
-        throw new AppError("User is already exist", 400);
+        throw new AppError("Employee is already exist", 400);
       }
       let newEmployee = new EmployeeModel(employee);
       return newEmployee;

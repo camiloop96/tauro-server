@@ -2,6 +2,7 @@ import { ICredentialsRepository } from "@modules/security/domain/repositories/IC
 import { IRoleRepository } from "@modules/security/domain/repositories/IRoleRepository";
 import { IUserRepository } from "@modules/security/domain/repositories/IUserRepository";
 import { IEmployeeRepository } from "@modules/staff/domain/repositories/IEmployeeRepository";
+import { IBranchStoreRepository } from "@modules/store/domain/repositories/IBranchStoreRepository";
 import { AppError } from "@shared/errors/AppError";
 import { Types } from "mongoose";
 
@@ -21,47 +22,41 @@ export class CreateUserUseCase implements ICreateUserUseCase {
     private readonly userRepository: IUserRepository,
     private readonly employeeRepository: IEmployeeRepository,
     private readonly roleRepository: IRoleRepository,
-    private readonly credentialsRepository: ICredentialsRepository
+    private readonly credentialsRepository: ICredentialsRepository,
+    private readonly branchStoreRepository: IBranchStoreRepository
   ) {}
 
   async execute(userData: IUserRequest): Promise<void> {
-    try {
-      // Existing user
-      const existingEmployee = await this.employeeRepository.getEmployeeById(
-        userData.employee
-      );
+    // Existing user
+    const existingEmployee = await this.employeeRepository.getEmployeeById(
+      userData.employee
+    );
 
-      // Existing user by employee id
-      const existEmployeeUser = await this.userRepository.isExistEmployeeUser(
-        existingEmployee
-      );
+    // Existing user by employee id
+    const existEmployeeUser = await this.userRepository.isExistEmployeeUser(
+      existingEmployee
+    );
 
-      if (existEmployeeUser) {
-        throw new AppError("The employee already has an associated user", 400);
-      }
-
-      // ExistingRole
-      const existingRole = await this.roleRepository.getRoleByName(
-        userData.role
-      );
-
-      // Creating credential
-      const createCredential =
-        await this.credentialsRepository.createCredential({
-          _id: undefined,
-          username: userData.username,
-          password: userData.password,
-        });
-
-      // Creating user
-
-      await this.userRepository.saveUser({
-        employee: userData.employee,
-        role: existingRole,
-        credential: createCredential,
-      });
-    } catch (error) {
-      throw new AppError("Error creating user", 500);
+    if (existEmployeeUser) {
+      throw new AppError("The employee already has an associated user", 400);
     }
+
+    // ExistingRole
+    const existingRole = await this.roleRepository.getRoleByName(userData.role);
+
+    // Creating credential
+    const createCredential = await this.credentialsRepository.createCredential({
+      _id: undefined,
+      username: userData.username,
+      password: userData.password,
+    });
+
+    // Creating user
+
+    await this.userRepository.saveUser({
+      employee: userData.employee,
+      role: existingRole,
+      credential: createCredential,
+    });
   }
 }

@@ -9,4 +9,5 @@ export interface IUserRepository {
   getUsersByRole(id: Types.ObjectId): Promise<User[]>;
   getUserByToken(token: string): Promise<Types.ObjectId>;
   getUserByCredential(credential: Types.ObjectId | undefined): Promise<User>;
+  createRootUser(user: User): Promise<void>;
 }
