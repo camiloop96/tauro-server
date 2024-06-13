@@ -1,7 +1,7 @@
 import { Router } from "express";
 import securityRoutes from "@modules/security/gateway";
 import storeRoutes from "@modules/store/gateway";
-import staffRoutes from "@modules/staff/gateway";
+import staffRoutes from "@modules/staff/staffGateway";
 
 // Router initialization
 const appRoutes = Router();

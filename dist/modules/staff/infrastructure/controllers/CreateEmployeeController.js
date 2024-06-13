@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * @file CreateEmployeeController.ts
+ * @description Defines the CreateEmployeeController class responsible for handling the creation of employees via HTTP requests.
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -16,15 +20,29 @@ const MongoSellerRepository_1 = require("../repositories/MongoSellerRepository")
 const MongoBranchStoreRepository_1 = require("../../../store/infraestructure/repositories/MongoBranchStoreRepository");
 const logsMessages_1 = require("../../../../utils/LogHandle/logsMessages");
 const AppError_1 = require("../../../../shared/errors/AppError");
+/**
+ * Controller class for handling the creation of employees.
+ */
 class CreateEmployeeController {
+    /**
+     * Creates an instance of CreateEmployeeController.
+     */
     constructor() {
         this.createEmployeeUseCase = new CreateEmployeeUseCase_1.CreateEmployeeUseCase(new MongoEmployeeRepository_1.MongoEmployeeRepository(), new MongoSellerRepository_1.MongoSellerRepository(), new MongoBranchStoreRepository_1.MongoBranchStoreRepository());
     }
+    /**
+     * Handles the creation of an employee.
+     *
+     * @param {Request} req - The HTTP request object.
+     * @param {Response} res - The HTTP response object.
+     * @returns {Promise<Response>} A promise that resolves to the HTTP response object.
+     * @throws {AppError} Throws an application-specific error if the creation fails.
+     */
     execute(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, logsMessages_1.logSuccess)(`POST simora/api/dashboard/staff/employee/create/`);
             try {
-                // Destructing request
+                // Destructuring request
                 const { name, lastName, DNI, branchStore, position } = req.body || {};
                 // Execute function
                 yield this.createEmployeeUseCase.execute({
@@ -58,3 +76,4 @@ class CreateEmployeeController {
     }
 }
 exports.CreateEmployeeController = CreateEmployeeController;
+exports.default = new CreateEmployeeController();

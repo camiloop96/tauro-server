@@ -1,3 +1,8 @@
+/**
+ * @file CreateEmployeeController.ts
+ * @description Defines the CreateEmployeeController class responsible for handling the creation of employees via HTTP requests.
+ */
+
 import {
   CreateEmployeeUseCase,
   ICreateEmployeeUseCase,
@@ -9,8 +14,15 @@ import { logError, logSuccess } from "@utils/LogHandle/logsMessages";
 import { AppError } from "@shared/errors/AppError";
 import { Request, Response } from "express";
 
+/**
+ * Controller class for handling the creation of employees.
+ */
 export class CreateEmployeeController {
   private readonly createEmployeeUseCase: ICreateEmployeeUseCase;
+
+  /**
+   * Creates an instance of CreateEmployeeController.
+   */
   constructor() {
     this.createEmployeeUseCase = new CreateEmployeeUseCase(
       new MongoEmployeeRepository(),
@@ -19,10 +31,18 @@ export class CreateEmployeeController {
     );
   }
 
-  async execute(req: Request, res: Response) {
+  /**
+   * Handles the creation of an employee.
+   *
+   * @param {Request} req - The HTTP request object.
+   * @param {Response} res - The HTTP response object.
+   * @returns {Promise<Response>} A promise that resolves to the HTTP response object.
+   * @throws {AppError} Throws an application-specific error if the creation fails.
+   */
+  async execute(req: Request, res: Response): Promise<Response> {
     logSuccess(`POST simora/api/dashboard/staff/employee/create/`);
     try {
-      // Destructing request
+      // Destructuring request
       const { name, lastName, DNI, branchStore, position } = req.body || {};
 
       // Execute function
@@ -54,3 +74,5 @@ export class CreateEmployeeController {
     }
   }
 }
+
+export default new CreateEmployeeController();
