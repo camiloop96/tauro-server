@@ -57,7 +57,6 @@ class CreateRootUserUseCase {
             const createRole = yield this.createRoleIfNotExist(this.roleMaster);
             // Branch Store
             const createBranchStore = yield this.createBranchStoreIfNotExist(employeeMasterData.branchStore);
-            (0, logsMessages_1.logSuccess)("Branch store is already exist");
             // Create Employee
             const employeeExist = yield this.employeeRepository.employeeExistByDNI(employeeMasterData.DNI);
             let newEmployee;
@@ -89,7 +88,7 @@ class CreateRootUserUseCase {
         return __awaiter(this, void 0, void 0, function* () {
             const roleExist = yield this.roleRepository.getRoleByName(roleMaster);
             if (roleExist) {
-                (0, logsMessages_1.logSuccess)("Role master already exists");
+                (0, logsMessages_1.logSuccess)("Role master is already exists");
                 return roleExist;
             }
             else {
@@ -101,13 +100,19 @@ class CreateRootUserUseCase {
     }
     createBranchStoreIfNotExist(branchStoreData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const branchStoreExist = yield this.branchStoreRepository.checkIfBranchStoreExistByName(this.roleMaster);
-            const newBranchStore = yield this.branchStoreRepository.createRootBranchStore({
-                name: branchStoreData.name,
-                state: branchStoreData.state,
-                city: branchStoreData.city,
-            });
-            return newBranchStore;
+            const branchStoreExist = yield this.branchStoreRepository.checkIfBranchStoreExistByName(branchStoreData === null || branchStoreData === void 0 ? void 0 : branchStoreData.name);
+            if (branchStoreExist) {
+                (0, logsMessages_1.logSuccess)("Branch store is already exist");
+                return;
+            }
+            else {
+                const newBranchStore = yield this.branchStoreRepository.createRootBranchStore({
+                    name: branchStoreData.name,
+                    state: branchStoreData.state,
+                    city: branchStoreData.city,
+                });
+                return newBranchStore;
+            }
         });
     }
     createEmployeeIfNotExist(employeeData, branchStore) {
@@ -126,7 +131,7 @@ class CreateRootUserUseCase {
         return __awaiter(this, void 0, void 0, function* () {
             const usernameExist = yield this.credentialRepository.credentialIsExist(usernameMaster);
             if (usernameExist) {
-                (0, logsMessages_1.logSuccess)("User already exists");
+                (0, logsMessages_1.logSuccess)("User is already exists");
             }
             else {
                 const createCredential = yield this.credentialRepository.createRootCredential({

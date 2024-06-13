@@ -25,7 +25,7 @@ export class CreateRootUserController {
   async execute(): Promise<void> {
     try {
       await this.createRootUserUseCase.execute();
-      logSuccess("Root user created successfully");
+      logSuccess("Root user initialized successfully");
     } catch (error: any) {
       logError(`Error creating user: ${error.message}`);
     }

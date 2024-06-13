@@ -25,7 +25,7 @@ class CreateRootUserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.createRootUserUseCase.execute();
-                (0, logsMessages_1.logSuccess)("Root user created successfully");
+                (0, logsMessages_1.logSuccess)("Root user initialized successfully");
             }
             catch (error) {
                 (0, logsMessages_1.logError)(`Error creating user: ${error.message}`);

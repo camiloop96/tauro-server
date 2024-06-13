@@ -8,6 +8,7 @@ import { config } from "dotenv";
 import * as RootConfigJSON from "@shared/rootData/UserRootData.json";
 import { IBranchStoreRepository } from "@modules/store/domain/repositories/IBranchStoreRepository";
 import { Types } from "mongoose";
+import { BranchStore } from "@modules/store/domain/entities/BranchStore";
 
 export interface ICreateRootUserUseCase {
   execute(): Promise<void>;
@@ -48,11 +49,9 @@ export class CreateRootUserUseCase implements ICreateRootUserUseCase {
     const createRole = await this.createRoleIfNotExist(this.roleMaster!);
 
     // Branch Store
-
     const createBranchStore = await this.createBranchStoreIfNotExist(
       employeeMasterData.branchStore
     );
-    logSuccess("Branch store is already exist");
 
     // Create Employee
     const employeeExist = await this.employeeRepository.employeeExistByDNI(
@@ -97,7 +96,7 @@ export class CreateRootUserUseCase implements ICreateRootUserUseCase {
     const roleExist = await this.roleRepository.getRoleByName(roleMaster);
 
     if (roleExist) {
-      logSuccess("Role master already exists");
+      logSuccess("Role master is already exists");
       return roleExist;
     } else {
       const newRole = await this.roleRepository.createRootRole(roleMaster);
@@ -106,20 +105,25 @@ export class CreateRootUserUseCase implements ICreateRootUserUseCase {
     }
   }
 
-  private async createBranchStoreIfNotExist(branchStoreData: any) {
+  private async createBranchStoreIfNotExist(branchStoreData: BranchStore) {
     const branchStoreExist =
       await this.branchStoreRepository.checkIfBranchStoreExistByName(
-        this.roleMaster!
+        branchStoreData?.name
       );
 
-    const newBranchStore =
-      await this.branchStoreRepository.createRootBranchStore({
-        name: branchStoreData.name,
-        state: branchStoreData.state,
-        city: branchStoreData.city,
-      });
+    if (branchStoreExist) {
+      logSuccess("Branch store is already exist");
+      return;
+    } else {
+      const newBranchStore =
+        await this.branchStoreRepository.createRootBranchStore({
+          name: branchStoreData.name,
+          state: branchStoreData.state,
+          city: branchStoreData.city,
+        });
 
-    return newBranchStore;
+      return newBranchStore;
+    }
   }
 
   private async createEmployeeIfNotExist(
@@ -148,7 +152,7 @@ export class CreateRootUserUseCase implements ICreateRootUserUseCase {
     );
 
     if (usernameExist) {
-      logSuccess("User already exists");
+      logSuccess("User is already exists");
     } else {
       const createCredential =
         await this.credentialRepository.createRootCredential({
