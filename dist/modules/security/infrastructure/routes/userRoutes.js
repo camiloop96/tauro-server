@@ -13,17 +13,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const ListUserController_1 = require("../controllers/user/ListUserController");
 const CreateUserController_1 = require("../controllers/user/CreateUserController");
+const GetUserDataController_1 = require("../controllers/user/GetUserDataController");
 // User routes instance router
 const userRoutes = (0, express_1.Router)();
 // Create user controller instances
 const createUserController = new CreateUserController_1.CreateUserController();
 const listUserController = new ListUserController_1.ListUserController();
+const getUserDataController = new GetUserDataController_1.GetUserDataController();
 // Routes
 userRoutes.post("/create/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield createUserController.execute(req, res);
 }));
 userRoutes.get("/list/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield listUserController.execute(req, res);
+}));
+userRoutes.post("/data/by-token/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield getUserDataController.execute(req, res);
 }));
 // UserRoutes.delete("/delete/:id/", DeleteUserById);
 // UserRoutes.put("/edit/:id", UpdateUser);

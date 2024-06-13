@@ -19,6 +19,30 @@ const AppError_1 = require("../../../../shared/errors/AppError");
 const JWTAuthenticationRepository_1 = require("./JWTAuthenticationRepository");
 const tokenManager = new JWTAuthenticationRepository_1.JWTAuthenticationRepository();
 class MongoUserRepository {
+    getUserDetail(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!id || !(0, mongoose_1.isValidObjectId)(id)) {
+                    throw new AppError_1.AppError("Missing or invalid ID", 400);
+                }
+                const userDetail = yield UserModel_1.default.findById(id);
+                if (userDetail) {
+                    return userDetail;
+                }
+                else {
+                    throw new AppError_1.AppError("User not found", 400);
+                }
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching user", 500, error);
+                }
+            }
+        });
+    }
     createRootUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

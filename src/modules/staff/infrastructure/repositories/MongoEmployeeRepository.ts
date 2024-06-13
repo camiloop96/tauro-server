@@ -5,6 +5,25 @@ import { EmployeeModel } from "../models/EmployeeModel";
 import { AppError } from "@shared/errors/AppError";
 
 export class MongoEmployeeRepository implements IEmployeeRepository {
+  async getEmployeeDetail(id: Types.ObjectId): Promise<Employee> {
+    try {
+      if (!id || !isValidObjectId(id)) {
+        throw new AppError("Invalid or missing ID", 400);
+      }
+      2;
+      const employeeDetail = await EmployeeModel.findById(id).select("-__v");
+      if (!employeeDetail) {
+        throw new AppError("Employee not found", 400);
+      }
+      return employeeDetail;
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching employee", 500);
+      }
+    }
+  }
   async employeeExistByDNI(DNI: number): Promise<boolean> {
     try {
       if (isNaN(DNI)) {

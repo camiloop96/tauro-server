@@ -14,6 +14,29 @@ const mongoose_1 = require("mongoose");
 const EmployeeModel_1 = require("../models/EmployeeModel");
 const AppError_1 = require("../../../../shared/errors/AppError");
 class MongoEmployeeRepository {
+    getEmployeeDetail(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!id || !(0, mongoose_1.isValidObjectId)(id)) {
+                    throw new AppError_1.AppError("Invalid or missing ID", 400);
+                }
+                2;
+                const employeeDetail = yield EmployeeModel_1.EmployeeModel.findById(id).select("-__v");
+                if (!employeeDetail) {
+                    throw new AppError_1.AppError("Employee not found", 400);
+                }
+                return employeeDetail;
+            }
+            catch (error) {
+                if (error instanceof AppError_1.AppError) {
+                    throw error;
+                }
+                else {
+                    throw new AppError_1.AppError("Error fetching employee", 500);
+                }
+            }
+        });
+    }
     employeeExistByDNI(DNI) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

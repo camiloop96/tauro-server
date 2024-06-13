@@ -2,6 +2,7 @@
 import { Request, Response, Router } from "express";
 import { ListUserController } from "../controllers/user/ListUserController";
 import { CreateUserController } from "../controllers/user/CreateUserController";
+import { GetUserDataController } from "../controllers/user/GetUserDataController";
 
 // User routes instance router
 const userRoutes = Router();
@@ -9,6 +10,7 @@ const userRoutes = Router();
 // Create user controller instances
 const createUserController = new CreateUserController();
 const listUserController = new ListUserController();
+const getUserDataController = new GetUserDataController();
 
 // Routes
 userRoutes.post("/create/", async (req: Request, res: Response) => {
@@ -16,6 +18,9 @@ userRoutes.post("/create/", async (req: Request, res: Response) => {
 });
 userRoutes.get("/list/", async (req: Request, res: Response) => {
   await listUserController.execute(req, res);
+});
+userRoutes.post("/data/by-token/", async (req: Request, res: Response) => {
+  await getUserDataController.execute(req, res);
 });
 // UserRoutes.delete("/delete/:id/", DeleteUserById);
 // UserRoutes.put("/edit/:id", UpdateUser);

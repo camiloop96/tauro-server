@@ -8,6 +8,25 @@ import { JWTAuthenticationRepository } from "./JWTAuthenticationRepository";
 const tokenManager = new JWTAuthenticationRepository();
 
 export class MongoUserRepository implements IUserRepository {
+  async getUserDetail(id: Types.ObjectId): Promise<User | null> {
+    try {
+      if (!id || !isValidObjectId(id)) {
+        throw new AppError("Missing or invalid ID", 400);
+      }
+      const userDetail: User | null = await UserModel.findById(id);
+      if (userDetail) {
+        return userDetail;
+      } else {
+        throw new AppError("User not found", 400);
+      }
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError("Error fetching user", 500, error);
+      }
+    }
+  }
   async createRootUser(user: User): Promise<void> {
     try {
       const newUser = new UserModel({
