@@ -11,12 +11,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const LoginController_1 = require("../controllers/authentication/LoginController");
+const VerifyTokenController_1 = require("../controllers/authentication/VerifyTokenController");
 // Create routes instance router
 const authenticationRoutes = (0, express_1.Router)();
 // Create authentication controller instances
 const loginController = new LoginController_1.LoginController();
+const verifyTokenController = new VerifyTokenController_1.VerifyTokenController();
 // Routes
 authenticationRoutes.post("/login/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield loginController.execute(req, res);
+}));
+authenticationRoutes.post("/token/verify", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield verifyTokenController.execute(req, res);
 }));
 exports.default = authenticationRoutes;

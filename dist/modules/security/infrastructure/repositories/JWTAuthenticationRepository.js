@@ -25,6 +25,9 @@ class JWTAuthenticationRepository {
                 if (!JWT_SECRET) {
                     throw new Error("JWT_SECRET is not defined in env");
                 }
+                if (!token) {
+                    throw new AppError_1.AppError("Token is missing or invalid", 400);
+                }
                 return new Promise((resolve, reject) => {
                     (0, jsonwebtoken_1.verify)(token, JWT_SECRET, (error, decodedToken) => {
                         if (error) {
@@ -41,7 +44,7 @@ class JWTAuthenticationRepository {
                     throw error;
                 }
                 else {
-                    throw new AppError_1.AppError("Error verifying token", 500);
+                    throw new AppError_1.AppError("Error verifying token", 500, error);
                 }
             }
         });

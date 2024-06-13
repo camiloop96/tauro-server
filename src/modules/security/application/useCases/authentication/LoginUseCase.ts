@@ -29,15 +29,11 @@ export class LoginUseCase implements ILoginUseCase {
     const existCredential =
       await this.credentialRepository.getCredentialsByUsername(username);
 
-    console.log(existCredential);
-
     // Get user by credential
     const findUser = await this.userRepository.getUserByCredential(
       existCredential?._id
     );
 
-    console.log(findUser);
-    
     // Compare hash password
     const comparePassword = await compareHashPassword(
       password,
@@ -55,7 +51,7 @@ export class LoginUseCase implements ILoginUseCase {
       throw new AppError("Token generation failed", 500);
     }
     // Get role name
-    let roleName = await this.roleRepository.getRoleByUserId(findUser._id);
+    let roleName = await this.roleRepository.getRoleByUserId(findUser?.role!);
 
     if (!roleName) {
       throw new AppError("Role not found", 404);

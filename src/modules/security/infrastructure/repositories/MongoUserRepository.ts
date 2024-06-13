@@ -20,7 +20,7 @@ export class MongoUserRepository implements IUserRepository {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError("Error creating user", 500);
+        throw new AppError("Error creating user", 500, error);
       }
     }
   }
@@ -42,7 +42,7 @@ export class MongoUserRepository implements IUserRepository {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError("Error fetching user", 500);
+        throw new AppError("Error fetching user", 500, error);
       }
     }
   }
@@ -72,7 +72,7 @@ export class MongoUserRepository implements IUserRepository {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError("Error fetching user", 500);
+        throw new AppError("Error fetching user", 500, error);
       }
     }
   }
@@ -108,7 +108,7 @@ export class MongoUserRepository implements IUserRepository {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError("Error fetching user employee", 500);
+        throw new AppError("Error fetching user employee", 500, error);
       }
     }
   }
@@ -129,7 +129,7 @@ export class MongoUserRepository implements IUserRepository {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError("Error fetching user", 500);
+        throw new AppError("Error fetching user", 500, error);
       }
     }
   }
@@ -139,7 +139,7 @@ export class MongoUserRepository implements IUserRepository {
       const userList: User[] = await UserModel.find();
       return userList;
     } catch (error) {
-      throw new AppError("Error fetching user", 500);
+      throw new AppError("Error fetching user", 500, error);
     }
   }
   async saveUser(user: User): Promise<void> {
@@ -154,7 +154,7 @@ export class MongoUserRepository implements IUserRepository {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError("Error saving user", 500);
+        throw new AppError("Error saving user", 500, error);
       }
     }
   }

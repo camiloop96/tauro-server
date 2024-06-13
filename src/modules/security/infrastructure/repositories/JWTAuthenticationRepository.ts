@@ -14,6 +14,9 @@ export class JWTAuthenticationRepository implements IAuthenticationRepository {
       if (!JWT_SECRET) {
         throw new Error("JWT_SECRET is not defined in env");
       }
+      if (!token) {
+        throw new AppError("Token is missing or invalid", 400);
+      }
       return new Promise<boolean>((resolve, reject) => {
         verify(
           token,
@@ -27,11 +30,11 @@ export class JWTAuthenticationRepository implements IAuthenticationRepository {
           }
         );
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError("Error verifying token", 500);
+        throw new AppError("Error verifying token", 500, error);
       }
     }
   }

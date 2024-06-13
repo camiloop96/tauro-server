@@ -25,10 +25,8 @@ class LoginUseCase {
             const { username, password } = credentials || {};
             // Check if username exist
             const existCredential = yield this.credentialRepository.getCredentialsByUsername(username);
-            console.log(existCredential);
             // Get user by credential
             const findUser = yield this.userRepository.getUserByCredential(existCredential === null || existCredential === void 0 ? void 0 : existCredential._id);
-            console.log(findUser);
             // Compare hash password
             const comparePassword = yield (0, passwordManager_1.compareHashPassword)(password, existCredential.password);
             if (!comparePassword) {
@@ -41,7 +39,7 @@ class LoginUseCase {
                 throw new AppError_1.AppError("Token generation failed", 500);
             }
             // Get role name
-            let roleName = yield this.roleRepository.getRoleByUserId(findUser._id);
+            let roleName = yield this.roleRepository.getRoleByUserId(findUser === null || findUser === void 0 ? void 0 : findUser.role);
             if (!roleName) {
                 throw new AppError_1.AppError("Role not found", 404);
             }

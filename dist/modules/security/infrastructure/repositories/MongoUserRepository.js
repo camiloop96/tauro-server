@@ -34,7 +34,7 @@ class MongoUserRepository {
                     throw error;
                 }
                 else {
-                    throw new AppError_1.AppError("Error creating user", 500);
+                    throw new AppError_1.AppError("Error creating user", 500, error);
                 }
             }
         });
@@ -58,7 +58,7 @@ class MongoUserRepository {
                     throw error;
                 }
                 else {
-                    throw new AppError_1.AppError("Error fetching user", 500);
+                    throw new AppError_1.AppError("Error fetching user", 500, error);
                 }
             }
         });
@@ -88,7 +88,7 @@ class MongoUserRepository {
                     throw error;
                 }
                 else {
-                    throw new AppError_1.AppError("Error fetching user", 500);
+                    throw new AppError_1.AppError("Error fetching user", 500, error);
                 }
             }
         });
@@ -132,7 +132,7 @@ class MongoUserRepository {
                     throw error;
                 }
                 else {
-                    throw new AppError_1.AppError("Error fetching user employee", 500);
+                    throw new AppError_1.AppError("Error fetching user employee", 500, error);
                 }
             }
         });
@@ -157,7 +157,7 @@ class MongoUserRepository {
                     throw error;
                 }
                 else {
-                    throw new AppError_1.AppError("Error fetching user", 500);
+                    throw new AppError_1.AppError("Error fetching user", 500, error);
                 }
             }
         });
@@ -169,7 +169,7 @@ class MongoUserRepository {
                 return userList;
             }
             catch (error) {
-                throw new AppError_1.AppError("Error fetching user", 500);
+                throw new AppError_1.AppError("Error fetching user", 500, error);
             }
         });
     }
@@ -188,7 +188,7 @@ class MongoUserRepository {
                     throw error;
                 }
                 else {
-                    throw new AppError_1.AppError("Error saving user", 500);
+                    throw new AppError_1.AppError("Error saving user", 500, error);
                 }
             }
         });
