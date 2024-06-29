@@ -6,10 +6,10 @@ import { IAddressItem, ICustomer } from "../../customer/types/CustomerTypes";
 import ProductModel from "../../products/models/ProductModel";
 import { generateUniqueGuideNumber } from "../guide/controller/guide";
 import { IProductItem } from "../../products/types/ProductTypes";
-import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
+// import { saveImageToCloudinary } from "../../utils/saveImageToCloudinary";
 import OrderBySellerModel from "../models/OrderBySeller";
-import { SellerModel } from "../../staff/Seller/models/SellerModel";
-import UserModel from "../../security/users/models/UserModel";
+// import { SellerModel } from "../../staff/Seller/models/SellerModel";
+// import UserModel from "../../security/users/models/UserModel";
 
 export const CreateOrderController = async (req: Request, res: Response) => {
   try {
@@ -117,21 +117,21 @@ export const CreateOrderController = async (req: Request, res: Response) => {
     createOrder.pago.tipo = pago.tipo;
     // Comprobante
     let imageFile = req.file;
-    if (imageFile && requiredInvoices.includes(pago.tipo)) {
-      let idInvoice = createOrder._id.toString();
-      let exportInvoice = await saveImageToCloudinary(
-        imageFile,
-        "pos/order/invoice/",
-        idInvoice
-      );
-      createOrder.pago.comprobante.url = exportInvoice.url;
-      createOrder.pago.comprobante.asset_id = exportInvoice.asset_id;
-      createOrder.pago.comprobante.validated = false;
-    } else {
-      createOrder.pago.comprobante.url = null;
-      createOrder.pago.comprobante.asset_id = null;
-      createOrder.pago.comprobante.validated = null;
-    }
+    // if (imageFile && requiredInvoices.includes(pago.tipo)) {
+    //   let idInvoice = createOrder._id.toString();
+    //   let exportInvoice = await saveImageToCloudinary(
+    //     imageFile,
+    //     "pos/order/invoice/",
+    //     idInvoice
+    //   );
+    //   createOrder.pago.comprobante.url = exportInvoice.url;
+    //   createOrder.pago.comprobante.asset_id = exportInvoice.asset_id;
+    //   createOrder.pago.comprobante.validated = false;
+    // } else {
+    //   createOrder.pago.comprobante.url = null;
+    //   createOrder.pago.comprobante.asset_id = null;
+    //   createOrder.pago.comprobante.validated = null;
+    // }
     // Timestamp
     createOrder.created_at = new Date(Date.now());
     // Productos
@@ -191,26 +191,26 @@ export const CreateOrderController = async (req: Request, res: Response) => {
 
     // Guardado del pedido al vendedor
 
-    let findSeller = await SellerModel.findById(vendedor);
+    // let findSeller = await SellerModel.findById(vendedor);
 
-    if (!findSeller) {
-      return res.status(400).json({
-        error: "No se encontro vendedor asociado",
-      });
-    }
+    // if (!findSeller) {
+    //   return res.status(400).json({
+    //     error: "No se encontro vendedor asociado",
+    //   });
+    // }
 
-    if (!findSeller.active) {
-      return res.status(400).json({
-        error: "El vendedor se encuentra inactivo",
-      });
-    }
+    // if (!findSeller.active) {
+    //   return res.status(400).json({
+    //     error: "El vendedor se encuentra inactivo",
+    //   });
+    // }
 
-    let saveOrderAtSeller = new OrderBySellerModel({
-      sellerID: findSeller._id,
-      orderID: createOrder._id,
-    });
+    // let saveOrderAtSeller = new OrderBySellerModel({
+    //   sellerID: findSeller._id,
+    //   orderID: createOrder._id,
+    // });
 
-    await saveOrderAtSeller.save();
+    // await saveOrderAtSeller.save();
     await createOrder.save();
     res.status(200).json({
       message: "Pedido agendado con éxito",

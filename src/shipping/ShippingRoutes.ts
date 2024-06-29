@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { GenerateGuideController } from "./controller/ShippingGuide/GenerateGuideController";
-import upload from "../../config/multerConfig";
+import upload from "../config/multer";
 import CoverageCitiesRoutes from "./CoverageCities/CoverageCitiesRoutes";
 
 const ShippingRoutes = Router();

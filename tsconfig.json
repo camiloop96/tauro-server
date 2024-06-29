@@ -5,7 +5,18 @@
     "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@modules/*": ["./src/modules/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@config/*": ["./src/config/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@shared/*": ["./src/shared/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

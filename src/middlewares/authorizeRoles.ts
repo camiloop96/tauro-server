@@ -1,5 +1,5 @@
 import { NextFunction, Request as ExpressRequest, Response } from "express";
-import RoleModel from "../security/roles/models/RolesModel";
+// import RoleModel from "../security/roles/models/RolesModel";
 
 interface CustomRequest<T = any> extends ExpressRequest {
   user?: T;
@@ -20,16 +20,16 @@ const authorizeRoles = (allowedRoles: string[]) => {
         });
       }
 
-      const userRole = await RoleModel.findById(userRoleId);
+      // const userRole = await RoleModel.findById(userRoleId);
 
-      if (userRole && allowedRoles.includes(userRole.name)) {
-        next();
-      } else {
-        return res.status(403).json({
-          message:
-            "Acceso prohibido: No tienes permiso para acceder a este recurso",
-        });
-      }
+      // if (userRole && allowedRoles.includes(userRole.name)) {
+      //   next();
+      // } else {
+      //   return res.status(403).json({
+      //     message:
+      //       "Acceso prohibido: No tienes permiso para acceder a este recurso",
+      //   });
+      // }
     } catch (error: any) {
       return res
         .status(500)
